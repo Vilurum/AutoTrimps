@@ -1865,7 +1865,7 @@ function autoMap() {
         ((game.global.world == 9235 || game.global.world == 200) && game.global.lastClearedCell > 80 && ((new Date().getTime() - game.global.zoneStarted) / 1000 / 60) < 3) ||
         ((game.global.world == 240 || game.global.world == 9200) && game.global.lastClearedCell > 80 && ((new Date().getTime() - game.global.zoneStarted) / 1000 / 60) < 4.5) ||
         ((game.global.world == 210 || game.global.world == 220 || game.global.world == 231 || game.global.world == 233 ||  game.global.world == 235 || game.global.world == 236 || game.global.world == 237 || game.global.world == 238 || game.global.world == 239) && game.global.mapBonus < 3) ||
-        ((game.global.world == 205 || game.global.world == 215 || game.global.world == 225 ) && game.global.mapBonus < 1)) {
+        ((game.global.world == 205 || game.global.world == 215 || game.global.world == 221 || game.global.world == 225 || game.global.world == 227) && game.global.mapBonus < 1)) {
 //        ((game.global.world == 15 || game.global.world == 25 || game.global.world == 31 || game.global.world == 34 || game.global.world == 37 || game.global.world == 41 || game.global.world == 43 || game.global.world == 45 || game.global.world == 47) && game.global.mapBonus < 1 && !game.global.mapsActive)) {  //didnt work (game.global.mapBonus < game.global.world-(game.upgrades.Coordinated.level+1)
         //(((((new Date().getTime() - game.global.zoneStarted) / 1000 / 60) < 80) || game.global.world > 244) && game.global.lastClearedCell > 93 && game.global.world > 225)) {
             shouldDoMaps = true;
