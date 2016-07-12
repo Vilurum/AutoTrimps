@@ -1552,7 +1552,7 @@ function manualLabor() {
 function autoStance() {
     if (game.global.gridArray.length === 0) return;
     var missingHealth = game.global.soldierHealthMax - game.global.soldierHealth;
-    if (game.global.world == 200) { // && !game.global.mapsActive
+    if (game.global.world == 9200) { // && !game.global.mapsActive
         var newSquadRdy = true;
     } else {
         var newSquadRdy = game.resources.trimps.realMax() <= game.resources.trimps.owned + 1;
