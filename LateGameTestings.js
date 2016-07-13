@@ -2250,7 +2250,7 @@ function autoMap() {
                     }
                 }
                 //forcibly run watch maps
-                if ((shouldDoWatchMaps||shouldDoNullMaps) && (game.global.world !=200 || game.global.lastClearedCell > 90) && game.resources.trimps.owned > game.resources.trimps.realMax() * 0.9999 )
+                if ((shouldDoWatchMaps||shouldDoNullMaps) && (game.global.world !=200 || game.global.lastClearedCell > 990) && game.resources.trimps.owned > game.resources.trimps.realMax() * 0.9999 )
                     mapsClicked();                
             }
         } else if (game.global.preMapsActive) {
