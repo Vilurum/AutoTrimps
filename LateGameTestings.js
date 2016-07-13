@@ -2231,14 +2231,14 @@ function autoMap() {
                 if (shouldDoMap != "world") {
                     //if shouldFarm, don't switch until after megamining //genBTC changed.
                     if (!game.global.switchToMaps){
-                        if ((shouldDoMaps && game.global.lastClearedCell < 10 && game.resources.trimps.owned > game.resources.trimps.realMax() * 0.9999) || ((shouldFarm || shouldDoMaps) && game.global.lastClearedCell >= 81) || (needPrestige && game.resources.trimps.owned > game.resources.trimps.realMax() * 0.9999)|| doVoids || shouldDoMap!="world")
+                        if ((shouldDoMaps && game.global.lastClearedCell < 10 && game.resources.trimps.owned > game.resources.trimps.realMax() * 0.9999) || ((shouldFarm || shouldDoMaps) && game.global.lastClearedCell >= 81) || (game.global.lastClearedCell >= 81 && needPrestige && game.resources.trimps.owned > game.resources.trimps.realMax() * 0.9999)|| doVoids || shouldDoMap!="world")
                             mapsClicked();
                     }
                     ////Get Impatient/Abandon if: need prestige / _NEED_ to do void maps / on lead in odd world. AND a new army is ready, OR _need_ to void map OR lead farming and we're almost done with the zone )
                     if(
                         game.global.switchToMaps 
                         && 
-                        ((needPrestige && game.global.world !=200) || doVoids || (game.global.challengeActive == 'Lead' && game.global.world % 2 == 1)) 
+                        ((game.global.lastClearedCell >= 81 && needPrestige && game.global.world !=200) || doVoids || (game.global.challengeActive == 'Lead' && game.global.world % 2 == 1)) 
                         && 
                             (
                             (game.resources.trimps.realMax() <= game.resources.trimps.owned + 1)
