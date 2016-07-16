@@ -986,9 +986,11 @@ function buyUpgrades() {
         upgrade = upgradeList[upgrade];
         var gameUpgrade = game.upgrades[upgrade];
         var available = (gameUpgrade.allowed > gameUpgrade.done && canAffordTwoLevel(gameUpgrade));
+            if (upgrade == 'Gigastation' && game.global.world == 240) {
+            buyUpgrade('Gigastation');
+        }
         if (upgrade == 'Coordination' && !canAffordCoordinationTrimps()) continue;
         if (upgrade == 'Shieldblock' && !getPageSetting('BuyShieldblock')) continue;
-        if (upgrade == 'Gigastation' && game.global.world != 240) continue;
         if (upgrade == 'Gigastation' && (game.global.lastWarp ? game.buildings.Warpstation.owned < (game.global.lastWarp + getPageSetting('DeltaGigastation') + 8 - gameUpgrade.allowed + gameUpgrade.done) : game.buildings.Warpstation.owned < getPageSetting('FirstGigastation'))) continue;
         if ((!game.upgrades.Scientists.done && upgrade != 'Battle') ? (available && upgrade == 'Scientists' && game.upgrades.Scientists.allowed) : (available)) {
             buyUpgrade(upgrade, true, true);
