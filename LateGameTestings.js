@@ -1863,7 +1863,7 @@ function autoMap() {
 //        (game.global.mapBonus <= 1 && game.global.world >= 212 && game.global.world < 220) ||
         //(game.global.mapBonus <= 3 && game.global.world >= 220 && game.global.world < 225) ||
         (game.global.mapBonus <= 8 && (game.global.world == 250 || game.global.world == 200 || game.global.world == 251 || game.global.world == 252 || game.global.world == 253 || game.global.world == 254)) ||
-        (game.global.mapBonus <= 4 && (game.global.world == 230 || game.global.world == 240) ||
+        (game.global.mapBonus <= 4 && (game.global.world == 230 || game.global.world == 240)) ||
         //(((new Date().getTime() - game.global.zoneStarted) / 1000 / 60) < 2.5 && game.global.world == 220 && game.global.lastClearedCell > 85) ||
 //        (game.global.world < 200 && ((new Date().getTime() - game.global.zoneStarted) > 27000 && game.global.mapBonus < 1 )) ||
 //        (game.global.world >= 22// && game.global.world <= 230 && game.global.mapBonus <= 2) ||
