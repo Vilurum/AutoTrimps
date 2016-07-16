@@ -989,6 +989,7 @@ function buyUpgrades() {
         if (upgrade == 'Coordination' && !canAffordCoordinationTrimps()) continue;
         if (upgrade == 'Shieldblock' && !getPageSetting('BuyShieldblock')) continue;
         if (upgrade == 'Gigastation' && (game.global.lastWarp ? game.buildings.Warpstation.owned < (game.global.lastWarp + getPageSetting('DeltaGigastation') + 8 - gameUpgrade.allowed + gameUpgrade.done) : game.buildings.Warpstation.owned < getPageSetting('FirstGigastation'))) continue;
+        if (upgrade == 'Gigastation' && game.global.world == 240) continue;
         if ((!game.upgrades.Scientists.done && upgrade != 'Battle') ? (available && upgrade == 'Scientists' && game.upgrades.Scientists.allowed) : (available)) {
             buyUpgrade(upgrade, true, true);
             if(upgrade == 'Coordination') newCoord = true;
@@ -1859,15 +1860,15 @@ function autoMap() {
 //        (game.global.mapBonus <= 0 && game.global.world >= 207 && game.global.world < 212) ||
 //        (game.global.mapBonus <= 1 && game.global.world >= 212 && game.global.world < 220) ||
         //(game.global.mapBonus <= 3 && game.global.world >= 220 && game.global.world < 225) ||
-        (game.global.mapBonus <= 8 && (game.global.world == 240 || game.global.world == 200)) ||
+        (game.global.mapBonus <= 8 && (game.global.world == 9240 || game.global.world == 200)) ||
         (game.global.mapBonus <= 4 && game.global.world == 230) ||
         //(((new Date().getTime() - game.global.zoneStarted) / 1000 / 60) < 2.5 && game.global.world == 220 && game.global.lastClearedCell > 85) ||
 //        (game.global.world < 200 && ((new Date().getTime() - game.global.zoneStarted) > 27000 && game.global.mapBonus < 1 )) ||
 //        (game.global.world >= 22// && game.global.world <= 230 && game.global.mapBonus <= 2) ||
 //        ((game.global.world == 50 || game.global.world == 60 || game.global.world == 70 || game.global.world == 80 || game.global.world == 90 || game.global.world == 100 || game.global.world == 110 || game.global.world == 120 || game.global.world == 130 || game.global.world == 140 || game.global.world == 150 || game.global.world == 160 || game.global.world == 170 || game.global.world == 180 || game.global.world == 190 || game.global.world == 165 || game.global.world == 175 || game.global.world == 185 || game.global.world == 199) && game.global.mapBonus <= 1) ||
 //        (game.global.world > 240 && ((new Date().getTime() - game.global.mapStarted > 8000 && game.global.mapsActive) || game.global.mapBonus < 1)) ||
-        ((game.global.world == 9235 || game.global.world == 200) && game.global.lastClearedCell > 70 && ((new Date().getTime() - game.global.zoneStarted) / 1000 / 60) < 2.75) ||
-//        ((game.global.world == 240 || game.global.world == 9200) && game.global.lastClearedCell > 80 && ((new Date().getTime() - game.global.zoneStarted) / 1000 / 60) < 3.75) ||
+        ((game.global.world == 9235 || game.global.world == 200) && game.global.lastClearedCell > 70 && ((new Date().getTime() - game.global.zoneStarted) / 1000 / 60) < 3) ||
+        ((game.global.world == 240 || game.global.world == 9200) && game.global.lastClearedCell > 80 && ((new Date().getTime() - game.global.zoneStarted) / 1000 / 60) < 3) ||
         ((game.global.world == 210 || game.global.world == 220 || game.global.world == 231 || game.global.world == 233 ||  game.global.world == 235 || game.global.world == 236 || game.global.world == 237 || game.global.world == 238 || game.global.world == 239) && game.global.mapBonus < 3) ||
         ((game.global.world == 205 || game.global.world == 215 || game.global.world == 221 || game.global.world == 225 || game.global.world == 227) && game.global.mapBonus < 1) ||
         ((game.global.world == 15 || game.global.world == 21 || game.global.world == 25 || game.global.world == 31 || game.global.world == 34 || game.global.world == 37 || game.global.world == 941 || game.global.world == 943 || game.global.world == 945 || game.global.world == 947) && game.global.mapBonus < 1 && !game.global.mapsActive)) {  //didnt work (game.global.mapBonus < game.global.world-(game.upgrades.Coordinated.level+1)
