@@ -987,7 +987,7 @@ function buyUpgrades() {
         var gameUpgrade = game.upgrades[upgrade];
         var available = (gameUpgrade.allowed > gameUpgrade.done && canAffordTwoLevel(gameUpgrade));
             if (upgrade == 'Gigastation' && game.global.world == 240) {
-            buyUpgrade('Gigastation');
+            buyUpgrade('Gigastation', true, true);
         }
         if (upgrade == 'Coordination' && !canAffordCoordinationTrimps()) continue;
         if (upgrade == 'Shieldblock' && !getPageSetting('BuyShieldblock')) continue;
