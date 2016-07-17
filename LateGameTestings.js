@@ -1869,7 +1869,7 @@ function autoMap() {
 //        (game.global.mapBonus <= 0 && game.global.world >= 207 && game.global.world < 212) ||
 //        (game.global.mapBonus <= 1 && game.global.world >= 212 && game.global.world < 220) ||
         //(game.global.mapBonus <= 3 && game.global.world >= 220 && game.global.world < 225) ||
-        (game.global.mapBonus <= 8 && (game.global.world == 250 || game.global.world == 200 || game.global.world == 251 || game.global.world == 252 || game.global.world == 253 || game.global.world == 254 || game.global.world == 255 || game.global.world == 256 || game.global.world == 257 || game.global.world == 258 || game.global.world == 259 || game.global.world == 260)) ||
+        (game.global.mapBonus <= 8 && (game.global.world == 250 || game.global.world == 200 || game.global.world == 251 || game.global.world == 252 || game.global.world == 253 || game.global.world == 254 || game.global.world == 255 || game.global.world == 9256 || game.global.world == 9257 || game.global.world == 9258 || game.global.world == 9259 || game.global.world == 9260)) ||
         (game.global.mapBonus <= 4 && (game.global.world == 230 || game.global.world == 240)) ||
         //(((new Date().getTime() - game.global.zoneStarted) / 1000 / 60) < 2.5 && game.global.world == 220 && game.global.lastClearedCell > 85) ||
 //        (game.global.world < 200 && ((new Date().getTime() - game.global.zoneStarted) > 27000 && game.global.mapBonus < 1 )) ||
