@@ -757,10 +757,6 @@ function evaluateEfficiency(equipName) {
         Res = 0;
         Wall = true;
     }
-    if (gameResource.prestige >= 50 && (equip.Stat == 'health') && game.global.world == 260) {
-        Res = 0;
-        Wall = true;
-    }
     //not working 
     //if ((gameResource.prestige <= ((game.global.world-10)/5)+2) && (equip.Stat == 'attack')) {
     //    WarpstationWall = true;
@@ -1419,7 +1415,7 @@ function autoLevelEquipment() {
                     ||
                     ( getPageSetting('BuyWeaponUpgrades') && equipmentList[equipName].Stat == 'block' )
                     ||
-                    ( getPageSetting('BuyArmorUpgrades') && (equipmentList[equipName].Stat == 'health' )
+                    ((getPageSetting('BuyArmorUpgrades') && (gameResource.prestige <= 49 || game.global.world >= 260)) && (equipmentList[equipName].Stat == 'health' )
                         && 
                 //Only buy Armor prestiges when 'DelayArmorWhenNeeded' is on, IF:
                         (
