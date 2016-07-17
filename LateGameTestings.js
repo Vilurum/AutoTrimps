@@ -943,16 +943,21 @@ function easyMode() {
         autoTrimpSettings.FarmerRatio.value = '5';
         autoTrimpSettings.LumberjackRatio.value = '2';
         autoTrimpSettings.MinerRatio.value = '40';
-        } else if (game.global.world <= 200) {
+        } else if (game.global.world < 200) {
         autoTrimpSettings.MaxTrainers.value = -1;
         autoTrimpSettings.FarmerRatio.value = '1';
-        autoTrimpSettings.LumberjackRatio.value = '5';
-        autoTrimpSettings.MinerRatio.value = '80';
+        autoTrimpSettings.LumberjackRatio.value = '40';
+        autoTrimpSettings.MinerRatio.value = '60';
+        } else if (game.global.world == 200) {
+        autoTrimpSettings.MaxTrainers.value = -1;
+        autoTrimpSettings.FarmerRatio.value = '1';
+        autoTrimpSettings.LumberjackRatio.value = '80';
+        autoTrimpSettings.MinerRatio.value = '20';
         } else {
         autoTrimpSettings.MaxTrainers.value = -1;
-        autoTrimpSettings.FarmerRatio.value = '1';
+        autoTrimpSettings.FarmerRatio.value = '5';
         autoTrimpSettings.LumberjackRatio.value = '1';
-        autoTrimpSettings.MinerRatio.value = '60';
+        autoTrimpSettings.MinerRatio.value = '40';
         }
         
         //save some wood
@@ -1113,7 +1118,7 @@ function buyStorage() {
        if (game.global.world < 200 && game.global.world > 40 && ((game.global.world >= 41 && game.global.world <= 50) || (game.global.world >= 51 && game.global.world <= 60) || (game.global.world >= 65 && game.global.world <= 70))) {
            document.getElementById('Prestige').selectedIndex = 2;
            autoTrimpSettings.Prestige.selected = "Dagadder";
-       } else if (game.global.world < 200 && game.global.world > 40 && ((game.global.world >= 78 && game.global.world <= 80) || (game.global.world >= 88 && game.global.world <= 90) || (game.global.world >= 98 && game.global.world <= 100) || (game.global.world >= 108 && game.global.world <= 110) || (game.global.world >= 118 && game.global.world <= 120) || (game.global.world >= 128 && game.global.world <= 130) || (game.global.world >= 138 && game.global.world <= 140) || (game.global.world >= 148 && game.global.world <= 150) || (game.global.world >= 158 && game.global.world <= 160) || (game.global.world >= 168 && game.global.world <= 170) || (game.global.world >= 177 && game.global.world <= 180) || (game.global.world >= 186 && game.global.world <= 190) || (game.global.world == 199))) {
+       } else if (game.global.world < 200 && game.global.world > 40 && ((game.global.world >= 78 && game.global.world <= 80) || (game.global.world >= 88 && game.global.world <= 90) || (game.global.world >= 98 && game.global.world <= 100) || (game.global.world >= 108 && game.global.world <= 110) || (game.global.world >= 118 && game.global.world <= 120) || (game.global.world >= 128 && game.global.world <= 130) || (game.global.world >= 138 && game.global.world <= 140) || (game.global.world >= 148 && game.global.world <= 150) || (game.global.world >= 158 && game.global.world <= 160) || (game.global.world >= 168 && game.global.world <= 170) || (game.global.world >= 177 && game.global.world <= 180) || (game.global.world >= 186 && game.global.world <= 190) || (game.global.world == 9199))) {
            document.getElementById('Prestige').selectedIndex = 1;
            autoTrimpSettings.Prestige.selected = "Supershield";
     //   } else if (game.global.world == 200 && game.global.lastClearedCell < 100 && game.global.lastClearedCell > 10) {
@@ -1369,7 +1374,7 @@ function autoLevelEquipment() {
     if (game.global.world < 199 || game.global.world > 200 || ((new Date().getTime() - game.global.zoneStarted) / 1000 / 60) > 85) {
     autoTrimpSettings.GeneticistTimer.value = '30';
     } else {
-    autoTrimpSettings.GeneticistTimer.value = '45';
+    autoTrimpSettings.GeneticistTimer.value = '9';
     }
 
     for (var equipName in equipmentList) {
@@ -1541,9 +1546,11 @@ function manualLabor() {
         if (game.global.playerGathering != lowestResource && !haveWorkers && !breedFire) {
             // debug('Set gather lowestResource');
             setGather(lowestResource);
-        } else if (game.global.turkimpTimer > 0) {
+        } else if (game.global.turkimpTimer > 0 && game.global.world != 200 ) {
             //debug('Set gather ManualGather');
             setGather('metal');
+        } else if (game.global.turkimpTimer > 0 && game.global.world == 200) {
+            setGather('wood');
         } else  if (game.resources.science.owned < getPsString('science', true) * 60 && document.getElementById('scienceCollectBtn').style.display != 'none' && document.getElementById('science').style.visibility != 'hidden' && game.global.turkimpTimer < 1 && haveWorkers) {
             setGather('science');
         }
@@ -1559,7 +1566,7 @@ function manualLabor() {
 function autoStance() {
     if (game.global.gridArray.length === 0) return;
     var missingHealth = game.global.soldierHealthMax - game.global.soldierHealth;
-    if (game.global.world == 9200) { // && !game.global.mapsActive
+    if (game.global.world == 200) { // && !game.global.mapsActive
         var newSquadRdy = true;
     } else {
         var newSquadRdy = game.resources.trimps.realMax() <= game.resources.trimps.owned + 1;
@@ -1869,7 +1876,7 @@ function autoMap() {
 //        (game.global.world >= 22// && game.global.world <= 230 && game.global.mapBonus <= 2) ||
 //        ((game.global.world == 50 || game.global.world == 60 || game.global.world == 70 || game.global.world == 80 || game.global.world == 90 || game.global.world == 100 || game.global.world == 110 || game.global.world == 120 || game.global.world == 130 || game.global.world == 140 || game.global.world == 150 || game.global.world == 160 || game.global.world == 170 || game.global.world == 180 || game.global.world == 190 || game.global.world == 165 || game.global.world == 175 || game.global.world == 185 || game.global.world == 199) && game.global.mapBonus <= 1) ||
 //        (game.global.world > 240 && ((new Date().getTime() - game.global.mapStarted > 8000 && game.global.mapsActive) || game.global.mapBonus < 1)) ||
-        ((game.global.world == 9235 || game.global.world == 200) && game.global.lastClearedCell > 70 && ((new Date().getTime() - game.global.zoneStarted) / 1000 / 60) < 3) ||
+//        ((game.global.world == 9235 || game.global.world == 200) && game.global.lastClearedCell > 70 && ((new Date().getTime() - game.global.zoneStarted) / 1000 / 60) < 3) ||
         ((game.global.world == 260 || game.global.world == 9200) && game.global.lastClearedCell > 80 && ((new Date().getTime() - game.global.zoneStarted) / 1000 / 60) < 6) ||
         ((game.global.world == 210 || game.global.world == 220 || game.global.world == 231 || game.global.world == 233 ||  game.global.world == 235 || game.global.world == 236 || game.global.world == 237 || game.global.world == 238 || game.global.world == 239 || game.global.world == 241 || game.global.world == 242 || game.global.world == 243 || game.global.world == 244 || game.global.world == 245 || game.global.world == 246 || game.global.world == 247 || game.global.world == 248 || game.global.world == 249) && game.global.mapBonus < 3) ||
         ((game.global.world == 205 || game.global.world == 215 || game.global.world == 221 || game.global.world == 225 || game.global.world == 227) && game.global.mapBonus < 1) ||
@@ -2559,7 +2566,7 @@ function manageGenes() {
     }
         //if our time remaining to full trimps is still too high, fire some jobs to get-er-done
         //needs option to toggle? advanced options?
-    else if ((targetBreed < getBreedTime(true) || (game.resources.trimps.soldiers == 0 && getBreedTime(true) > 6)) && breedFire == false && (getPageSetting('BreedFire') || (game.global.world == 200 && game.global.lastClearedCell > 90)) && game.global.world > 10) {
+    else if ((targetBreed < getBreedTime(true) || (game.resources.trimps.soldiers == 0 && getBreedTime(true) > 0.2)) && breedFire == false && (getPageSetting('BreedFire') || (game.global.world == 200)) && game.global.world > 10) {
         breedFire = true;
     }
     /*    
