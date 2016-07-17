@@ -313,7 +313,7 @@ function highlightHousing() {
                 //break;
                 
                 //Warpstation Wall - if we try to save to next prestige, allow only warps that cost allot less then current metal.
-                if ((WarpstationWall == true && bestBuilding == "Warpstation") || (game.global.world == 260 && game.buildings.Warpstation.owned >= 290))
+                if ((WarpstationWall == true && bestBuilding == "Warpstation") || (game.global.world == 255 && game.buildings.Warpstation.owned >= 275))
 
                 //    (1.1 * getBuildingItemPrice(game.buildings.Warpstation, "metal", false, 1) > game.resources.metal.owned))
                         bestBuilding = null;
@@ -991,7 +991,7 @@ function buyUpgrades() {
         upgrade = upgradeList[upgrade];
         var gameUpgrade = game.upgrades[upgrade];
         var available = (gameUpgrade.allowed > gameUpgrade.done && canAffordTwoLevel(gameUpgrade));
-            if (upgrade == 'Gigastation' && game.global.world == 260) {
+            if (upgrade == 'Gigastation' && game.global.world == 255) {
             buyUpgrade('Gigastation', true, true);
         }
         if (upgrade == 'Coordination' && !canAffordCoordinationTrimps()) continue;
@@ -1415,7 +1415,7 @@ function autoLevelEquipment() {
                     ||
                     ( getPageSetting('BuyWeaponUpgrades') && equipmentList[equipName].Stat == 'block' )
                     ||
-                    ((getPageSetting('BuyArmorUpgrades') && (gameResource.prestige <= 49 || game.global.world > 260)) && (equipmentList[equipName].Stat == 'health' )
+                    ((getPageSetting('BuyArmorUpgrades') && (gameResource.prestige <= 48 || game.global.world > 255)) && (equipmentList[equipName].Stat == 'health' )
                         && 
                 //Only buy Armor prestiges when 'DelayArmorWhenNeeded' is on, IF:
                         (
@@ -1877,7 +1877,7 @@ function autoMap() {
 //        ((game.global.world == 50 || game.global.world == 60 || game.global.world == 70 || game.global.world == 80 || game.global.world == 90 || game.global.world == 100 || game.global.world == 110 || game.global.world == 120 || game.global.world == 130 || game.global.world == 140 || game.global.world == 150 || game.global.world == 160 || game.global.world == 170 || game.global.world == 180 || game.global.world == 190 || game.global.world == 165 || game.global.world == 175 || game.global.world == 185 || game.global.world == 199) && game.global.mapBonus <= 1) ||
 //        (game.global.world > 240 && ((new Date().getTime() - game.global.mapStarted > 8000 && game.global.mapsActive) || game.global.mapBonus < 1)) ||
 //        ((game.global.world == 9235 || game.global.world == 200) && game.global.lastClearedCell > 70 && ((new Date().getTime() - game.global.zoneStarted) / 1000 / 60) < 3) ||
-        ((game.global.world == 260 || game.global.world == 9200) && game.global.lastClearedCell > 80 && ((new Date().getTime() - game.global.zoneStarted) / 1000 / 60) < 6.5) ||
+        ((game.global.world == 255 || game.global.world == 9200) && game.global.lastClearedCell > 80 && ((new Date().getTime() - game.global.zoneStarted) / 1000 / 60) < 2) ||
         ((game.global.world == 210 || game.global.world == 220 || game.global.world == 231 || game.global.world == 232 || game.global.world == 233 ||  game.global.world == 234 || game.global.world == 235 || game.global.world == 236 || game.global.world == 237 || game.global.world == 238 || game.global.world == 239 || game.global.world == 241 || game.global.world == 242 || game.global.world == 243 || game.global.world == 244 || game.global.world == 245 || game.global.world == 246 || game.global.world == 247 || game.global.world == 248 || game.global.world == 249) && game.global.mapBonus < 4) ||
         ((game.global.world == 205 || game.global.world == 215 || game.global.world == 221 || game.global.world == 225 || game.global.world == 226 || game.global.world == 227 || game.global.world == 228 || game.global.world == 229) && game.global.mapBonus < 1) ||
         ((game.global.world == 15 || game.global.world == 21 || game.global.world == 25 || game.global.world == 31 || game.global.world == 34 || game.global.world == 37 || game.global.world == 941 || game.global.world == 943 || game.global.world == 945 || game.global.world == 947) && game.global.mapBonus < 1 && !game.global.mapsActive)) {  //didnt work (game.global.mapBonus < game.global.world-(game.upgrades.Coordinated.level+1)
