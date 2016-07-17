@@ -2275,7 +2275,7 @@ function autoMap() {
                     document.getElementById("mapLevelInput").value = game.global.world;
                 else
                     document.getElementById("mapLevelInput").value = siphlvl;
-                if (game.global.world > 200 || game.global.world < 200) {
+                if (game.global.world > 200 || (game.global.world < 200 && game.global.world > 90)) {
                     sizeAdvMapsRange.value = 9;
                     adjustMap('size', 9);
                     difficultyAdvMapsRange.value = 9;
