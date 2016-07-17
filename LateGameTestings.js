@@ -757,6 +757,10 @@ function evaluateEfficiency(equipName) {
         Res = 0;
         Wall = true;
     }
+    if (gameResource.prestige >= 50 && (equip.Stat == 'health') && game.global.world == 260) {
+        Res = 0;
+        Wall = true;
+    }
     //not working 
     //if ((gameResource.prestige <= ((game.global.world-10)/5)+2) && (equip.Stat == 'attack')) {
     //    WarpstationWall = true;
