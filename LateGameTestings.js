@@ -2317,24 +2317,24 @@ function autoMap() {
                     updateMapCost();
                 }
                 //if we are farming (for resources), make sure it's metal, and put low priority on size
-                if(shouldFarm) {
-                    biomeAdvMapsSelect.value = "Mountain";
-                    while (sizeAdvMapsRange.value > 0 && updateMapCost(true) > game.resources.fragments.owned) {
-                        sizeAdvMapsRange.value = sizeAdvMapsRange.value - 1;
-                    }
-                    while (lootAdvMapsRange.value > 0 && updateMapCost(true) > game.resources.fragments.owned) {
-                        lootAdvMapsRange.value = lootAdvMapsRange.value - 1;
-                    }
-                } else {
-                    while (lootAdvMapsRange.value > 0 && updateMapCost(true) > game.resources.fragments.owned) {
-                        lootAdvMapsRange.value = lootAdvMapsRange.value - 1;
-                    }
-                    //prioritize size over difficulty? Not sure. high Helium that just wants prestige = yes.
-                    //Really just trying to prevent prestige mapping from getting stuck
-                    while (difficultyAdvMapsRange.value > 0 && updateMapCost(true) > game.resources.fragments.owned) {
-                        difficultyAdvMapsRange.value = difficultyAdvMapsRange.value - 1;
-                    }
-                }
+            //    if(shouldFarm) {
+            //        biomeAdvMapsSelect.value = "Mountain";
+            //        while (sizeAdvMapsRange.value > 0 && updateMapCost(true) > game.resources.fragments.owned) {
+            //            sizeAdvMapsRange.value = sizeAdvMapsRange.value - 1;
+            //        }
+            //        while (lootAdvMapsRange.value > 0 && updateMapCost(true) > game.resources.fragments.owned) {
+            //            lootAdvMapsRange.value = lootAdvMapsRange.value - 1;
+            //        }
+            //    } else {
+            //        while (lootAdvMapsRange.value > 0 && updateMapCost(true) > game.resources.fragments.owned) {
+            //            lootAdvMapsRange.value = lootAdvMapsRange.value - 1;
+            //        }
+            //        //prioritize size over difficulty? Not sure. high Helium that just wants prestige = yes.
+            //        //Really just trying to prevent prestige mapping from getting stuck
+            //        while (difficultyAdvMapsRange.value > 0 && updateMapCost(true) > game.resources.fragments.owned) {
+            //            difficultyAdvMapsRange.value = difficultyAdvMapsRange.value - 1;
+            //        }
+            //    }
                 //if we can't afford the map we designed, pick our highest map
                 if (updateMapCost(true) > game.resources.fragments.owned) {
                     selectMap(game.global.mapsOwnedArray[highestMap].id);
