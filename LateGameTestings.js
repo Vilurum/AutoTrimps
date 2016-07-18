@@ -934,7 +934,12 @@ function initializeAutoTrimps() {
 function easyMode() {
     if (game.resources.trimps.realMax() > 50000000) {
         autoTrimpSettings.MaxHouse.value = (game.global.world * 2);
-        if (game.buildings.Tribute.owned < 1100) {
+        if (game.buildings.Tribute.owned < 2100 && game.global.turkimpTimer > 0 && game.global.world <= 190 && game.global.mapsActive && getBuildingItemPrice(game.buildings.Warpstation, "gems", false, 1) > game.resources.gems.owned) {
+        autoTrimpSettings.MaxTrainers.value = game.buildings.Tribute.owned/2.1;
+        autoTrimpSettings.FarmerRatio.value = '60';
+        autoTrimpSettings.LumberjackRatio.value = '5';
+        autoTrimpSettings.MinerRatio.value = '5';
+        }else if (game.buildings.Tribute.owned < 1100) {
         autoTrimpSettings.MaxTrainers.value = game.buildings.Tribute.owned/2.1;
         autoTrimpSettings.FarmerRatio.value = '10';
         autoTrimpSettings.LumberjackRatio.value = '2';
@@ -1543,9 +1548,12 @@ function manualLabor() {
             // debug('Current Stats ' + resource + ' is ' + currentRate + ' lowest ' + lowestResource + lowestResourceRate+ ' haveworkers ' +haveWorkers);
         }
 
-        if (game.global.playerGathering != lowestResource && !haveWorkers && !breedFire) {
+        if (game.global.playerGathering != lowestResource && !haveWorkers && !breedFire && game.global.turkimpTimer < 1) {
             // debug('Set gather lowestResource');
             setGather(lowestResource);
+        } else if (game.global.turkimpTimer > 0 && game.global.world <= 190 && game.global.mapsActive && getBuildingItemPrice(game.buildings.Warpstation, "gems", false, 1) > game.resources.gems.owned ) {
+            //debug('Set gather ManualGather');
+            setGather('food');
         } else if (game.global.turkimpTimer > 0 && game.global.world != 200 ) {
             //debug('Set gather ManualGather');
             setGather('metal');
