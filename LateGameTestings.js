@@ -313,7 +313,7 @@ function highlightHousing() {
                 //break;
                 
                 //Warpstation Wall - if we try to save to next prestige, allow only warps that cost allot less then current metal.
-                if ((WarpstationWall == true && bestBuilding == "Warpstation") || (game.global.world == 255 && game.buildings.Warpstation.owned >= 275))
+                if ((WarpstationWall == true && bestBuilding == "Warpstation") || (game.global.world == getPageSetting('VoidMaps') && 4 * getBuildingItemPrice(game.buildings.Warpstation, "metal", false, 1) > game.resources.metal.owned))
 
                 //    (1.1 * getBuildingItemPrice(game.buildings.Warpstation, "metal", false, 1) > game.resources.metal.owned))
                         bestBuilding = null;
@@ -991,7 +991,7 @@ function buyUpgrades() {
         upgrade = upgradeList[upgrade];
         var gameUpgrade = game.upgrades[upgrade];
         var available = (gameUpgrade.allowed > gameUpgrade.done && canAffordTwoLevel(gameUpgrade));
-            if (upgrade == 'Gigastation' && (game.global.world == 255 || game.global.world == 260)) {
+            if (upgrade == 'Gigastation' && (game.global.world == getPageSetting('VoidMaps') || game.global.world == 260)) {
             buyUpgrade('Gigastation', true, true);
         }
         if (upgrade == 'Coordination' && !canAffordCoordinationTrimps()) continue;
@@ -1415,7 +1415,7 @@ function autoLevelEquipment() {
                     ||
                     ( getPageSetting('BuyWeaponUpgrades') && equipmentList[equipName].Stat == 'block' )
                     ||
-                    ((getPageSetting('BuyArmorUpgrades') && (gameResource.prestige <= 48 || game.global.world > 255)) && (equipmentList[equipName].Stat == 'health' )
+                    ((getPageSetting('BuyArmorUpgrades') && (gameResource.prestige+2 <= ((game.global.world-5)/5)) && (equipmentList[equipName].Stat == 'health') && (equipmentList[equipName].Resource == 'metal')
                         && 
                 //Only buy Armor prestiges when 'DelayArmorWhenNeeded' is on, IF:
                         (
