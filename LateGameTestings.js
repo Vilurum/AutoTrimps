@@ -1415,7 +1415,7 @@ function autoLevelEquipment() {
                     ||
                     ( getPageSetting('BuyWeaponUpgrades') && equipmentList[equipName].Stat == 'block' )
                     ||
-                    ((getPageSetting('BuyArmorUpgrades') && ((equipmentList[equipName].Resource != 'metal') || gameResource.prestige+2 <= ((game.global.world-5)/5)) && (equipmentList[equipName].Stat == 'health'))
+                    ((getPageSetting('BuyArmorUpgrades') && ((equipmentList[equipName].Resource != 'metal') || (gameResource.prestige+2 <= ((game.global.world-5)/5)) || gameResource.prestige < 5) && (equipmentList[equipName].Stat == 'health'))
                         && 
                 //Only buy Armor prestiges when 'DelayArmorWhenNeeded' is on, IF:
                         (
