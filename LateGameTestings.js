@@ -934,7 +934,7 @@ function initializeAutoTrimps() {
 function easyMode() {
     if (game.resources.trimps.realMax() > 50000000) {
         autoTrimpSettings.MaxHouse.value = (game.global.world * 2);
-        if (game.buildings.Tribute.owned < 2100 && game.global.turkimpTimer > 0 && game.global.world <= 190 && game.global.mapsActive && getBuildingItemPrice(game.buildings.Warpstation, "gems", false, 1) > game.resources.gems.owned) {
+        if (game.global.turkimpTimer > 0 && getBuildingItemPrice(game.buildings.Warpstation, "gems", false, 1) > game.resources.gems.owned) {
         autoTrimpSettings.MaxTrainers.value = game.buildings.Tribute.owned/2.1;
         autoTrimpSettings.FarmerRatio.value = '60';
         autoTrimpSettings.LumberjackRatio.value = '5';
