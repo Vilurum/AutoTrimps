@@ -991,7 +991,7 @@ function buyUpgrades() {
         upgrade = upgradeList[upgrade];
         var gameUpgrade = game.upgrades[upgrade];
         var available = (gameUpgrade.allowed > gameUpgrade.done && canAffordTwoLevel(gameUpgrade));
-            if (upgrade == 'Gigastation' && (game.global.world == getPageSetting('VoidMaps') || game.global.world == 260)) {
+            if (upgrade == 'Gigastation' && game.global.world >= getPageSetting('VoidMaps')) {
             buyUpgrade('Gigastation', true, true);
         }
         if (upgrade == 'Coordination' && !canAffordCoordinationTrimps()) continue;
