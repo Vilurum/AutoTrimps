@@ -1034,9 +1034,7 @@ function buyStorage() {
                 setGather('buildings');
             }
         }
-        if (game.resources.fragments.owned > 20*getBuildingItemPrice(game.buildings.Gateway, "fragments", false, 1) && game.global.world < 80 ) {
-           autoTrimpSettings.MaxGateway.value = (game.resources.fragments.owned / getBuildingItemPrice(game.buildings.Gateway, "fragments", false, 1));
-        } else if (game.resources.fragments.owned > 200*getBuildingItemPrice(game.buildings.Gateway, "fragments", false, 1)) {
+        if (game.global.world > 60 && game.resources.fragments.owned > 200*getBuildingItemPrice(game.buildings.Gateway, "fragments", false, 1)) {
            autoTrimpSettings.MaxGateway.value = 0.8 * game.global.world;
         }
         //if (game.global.world < Math.floor((getPageSetting('VoidMaps')/2.45))) {
