@@ -941,6 +941,7 @@ function easyMode() {
         autoTrimpSettings.MinerRatio.value = '5';
         }else if (game.buildings.Tribute.owned < 1100) {
         autoTrimpSettings.MaxTrainers.value = game.buildings.Tribute.owned/2.1;
+        autoTrimpSettings.MaxGateway.value = 50;
         autoTrimpSettings.FarmerRatio.value = '10';
         autoTrimpSettings.LumberjackRatio.value = '2';
         autoTrimpSettings.MinerRatio.value = '20';
