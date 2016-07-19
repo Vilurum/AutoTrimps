@@ -983,7 +983,7 @@ function easyMode() {
         autoTrimpSettings.MinerRatio.value = '10';
     } else {
         autoTrimpSettings.MaxHouse.value = 50;
-    	autoTrimpSettings.MaxGateway.value = 20;
+    	autoTrimpSettings.MaxGateway.value = 30;
         autoTrimpSettings.FarmerRatio.value = '5';
         autoTrimpSettings.LumberjackRatio.value = '5';
         autoTrimpSettings.MinerRatio.value = '1';
@@ -1034,7 +1034,7 @@ function buyStorage() {
                 setGather('buildings');
             }
         }
-        if (game.global.world > 60 && game.resources.fragments.owned > 200*getBuildingItemPrice(game.buildings.Gateway, "fragments", false, 1)) {
+        if (game.global.world > 35 && game.resources.fragments.owned > 200*getBuildingItemPrice(game.buildings.Gateway, "fragments", false, 1)) {
            autoTrimpSettings.MaxGateway.value = 0.8 * game.global.world;
         }
         //if (game.global.world < Math.floor((getPageSetting('VoidMaps')/2.45))) {
