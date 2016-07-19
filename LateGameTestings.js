@@ -978,14 +978,14 @@ function easyMode() {
     	//autoTrimpSettings.DeltaGigastation.value = 50;
     	//autoTrimpSettings.FirstGigastation.value = 50;
     	  autoTrimpSettings.MaxTrainers.value = 150;
-        autoTrimpSettings.FarmerRatio.value = '5';
-        autoTrimpSettings.LumberjackRatio.value = '5';
+        autoTrimpSettings.FarmerRatio.value = '40';
+        autoTrimpSettings.LumberjackRatio.value = '10';
         autoTrimpSettings.MinerRatio.value = '10';
     } else {
         autoTrimpSettings.MaxHouse.value = 50;
     	autoTrimpSettings.MaxGateway.value = 30;
-        autoTrimpSettings.FarmerRatio.value = '5';
-        autoTrimpSettings.LumberjackRatio.value = '5';
+        autoTrimpSettings.FarmerRatio.value = '40';
+        autoTrimpSettings.LumberjackRatio.value = '10';
         autoTrimpSettings.MinerRatio.value = '1';
     }
 }
