@@ -1551,7 +1551,7 @@ function manualLabor() {
         if (game.global.playerGathering != lowestResource && !haveWorkers && !breedFire && game.global.turkimpTimer < 1) {
             // debug('Set gather lowestResource');
             setGather(lowestResource);
-        } else if (game.global.turkimpTimer > 0 && game.global.world <= 190 && game.global.mapsActive && getBuildingItemPrice(game.buildings.Warpstation, "gems", false, 1) > game.resources.gems.owned ) {
+        } else if (game.global.turkimpTimer > 0 && getBuildingItemPrice(game.buildings.Warpstation, "gems", false, 1) > game.resources.gems.owned ) {
             //debug('Set gather ManualGather');
             setGather('food');
         } else if (game.global.turkimpTimer > 0 && game.global.world != 200 ) {
