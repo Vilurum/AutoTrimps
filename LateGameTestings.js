@@ -983,7 +983,7 @@ function easyMode() {
         autoTrimpSettings.MinerRatio.value = '10';
     } else {
         autoTrimpSettings.MaxHouse.value = 50;
-    	  autoTrimpSettings.MaxGateway.value = 20;
+    	autoTrimpSettings.MaxGateway.value = 20;
         autoTrimpSettings.FarmerRatio.value = '5';
         autoTrimpSettings.LumberjackRatio.value = '5';
         autoTrimpSettings.MinerRatio.value = '1';
