@@ -1378,7 +1378,7 @@ function autoLevelEquipment() {
     if (game.global.world < 199 || game.global.world > 200 || ((new Date().getTime() - game.global.zoneStarted) / 1000 / 60) > 85) {
     autoTrimpSettings.GeneticistTimer.value = '30';
     } else {
-    autoTrimpSettings.GeneticistTimer.value = '90';
+    autoTrimpSettings.GeneticistTimer.value = '45';
     }
 
     for (var equipName in equipmentList) {
@@ -1573,7 +1573,7 @@ function manualLabor() {
 function autoStance() {
     if (game.global.gridArray.length === 0) return;
     var missingHealth = game.global.soldierHealthMax - game.global.soldierHealth;
-    if (game.global.world == 200) { // && !game.global.mapsActive
+    if (game.global.world == 9200) { // && !game.global.mapsActive
         var newSquadRdy = true;
     } else {
         var newSquadRdy = game.resources.trimps.realMax() <= game.resources.trimps.owned + 1;
@@ -2282,7 +2282,7 @@ function autoMap() {
                     document.getElementById("mapLevelInput").value = game.global.world;
                 else
                     document.getElementById("mapLevelInput").value = siphlvl;
-                if (game.global.world > 200 || (game.global.world < 200 && game.global.world > 90)) {
+                if (game.global.world > 200 || (game.global.world < 199 && game.global.world > 90)) {
                     sizeAdvMapsRange.value = 9;
                     adjustMap('size', 9);
                     difficultyAdvMapsRange.value = 9;
