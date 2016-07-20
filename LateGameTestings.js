@@ -1122,7 +1122,7 @@ function buyStorage() {
        if (game.global.world < 200 && game.global.world > 40 && ((game.global.world >= 41 && game.global.world <= 50) || (game.global.world >= 51 && game.global.world <= 60) || (game.global.world >= 65 && game.global.world <= 70))) {
            document.getElementById('Prestige').selectedIndex = 2;
            autoTrimpSettings.Prestige.selected = "Dagadder";
-       } else if (game.global.world < 200 && game.global.world > 40 && ((game.global.world >= 78 && game.global.world <= 80) || (game.global.world >= 88 && game.global.world <= 90) || (game.global.world >= 98 && game.global.world <= 100) || (game.global.world >= 108 && game.global.world <= 110) || (game.global.world >= 118 && game.global.world <= 120) || (game.global.world >= 128 && game.global.world <= 130) || (game.global.world >= 138 && game.global.world <= 140) || (game.global.world >= 148 && game.global.world <= 150) || (game.global.world >= 158 && game.global.world <= 160) || (game.global.world >= 168 && game.global.world <= 170) || (game.global.world >= 177 && game.global.world <= 180) || (game.global.world >= 186 && game.global.world <= 190) || (game.global.world == 9199))) {
+       } else if (game.global.world < 200 && game.global.world > 40 && ((game.global.world >= 78 && game.global.world <= 80) || (game.global.world >= 88 && game.global.world <= 90) || (game.global.world >= 98 && game.global.world <= 100) || (game.global.world >= 108 && game.global.world <= 110) || (game.global.world >= 118 && game.global.world <= 120) || (game.global.world >= 128 && game.global.world <= 130) || (game.global.world >= 138 && game.global.world <= 140) || (game.global.world >= 148 && game.global.world <= 150) || (game.global.world >= 158 && game.global.world <= 160) || (game.global.world >= 168 && game.global.world <= 170) || (game.global.world >= 177 && game.global.world <= 180) || (game.global.world >= 186 && game.global.world <= 190) || (game.global.world == 199))) {
            document.getElementById('Prestige').selectedIndex = 1;
            autoTrimpSettings.Prestige.selected = "Supershield";
     //   } else if (game.global.world == 200 && game.global.lastClearedCell < 100 && game.global.lastClearedCell > 10) {
@@ -1378,7 +1378,7 @@ function autoLevelEquipment() {
     if (game.global.world < 199 || game.global.world > 200 || ((new Date().getTime() - game.global.zoneStarted) / 1000 / 60) > 85) {
     autoTrimpSettings.GeneticistTimer.value = '30';
     } else {
-    autoTrimpSettings.GeneticistTimer.value = '9';
+    autoTrimpSettings.GeneticistTimer.value = '90';
     }
 
     for (var equipName in equipmentList) {
@@ -2292,7 +2292,7 @@ function autoMap() {
 
                     biomeAdvMapsSelect.value = "Mountain";
                     updateMapCost();
-                } else if (game.global.world == 200) {
+                } else if (game.global.world == 200 || game.global.world == 199) {
                     sizeAdvMapsRange.value = 9;
                     adjustMap('size', 9);
                     difficultyAdvMapsRange.value = 9;
