@@ -767,7 +767,7 @@ function evaluateEfficiency(equipName) {
         Res = 0;
         Wall = true;
     }
-    if (gameResource.level > 11 && game.global.world != 200 && game.global.world > 37 && gameResource.cost * 4 > game.resources.metal.owned ) {
+    if (gameResource.level > 11 && game.global.world != 200 && game.global.world > 37 && gameResource.cost * 4 < game.resources.metal.owned ) {
         Res = 0;
         Wall = true;
     }
