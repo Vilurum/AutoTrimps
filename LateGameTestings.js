@@ -2539,7 +2539,6 @@ function autoGoldenUpgrades() {
 //Main Logic Loop///////////////////////
 ////////////////////////////////////////
 
-
 setTimeout(delayStart, startupDelay);
 function delayStart() {
     initializeAutoTrimps();
