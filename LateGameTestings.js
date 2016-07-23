@@ -2614,7 +2614,7 @@ function mainLoop() {
     setScienceNeeded();  //determine how much science is needed
     updateValueFields(); //refresh the UI
 
-    //if (getPageSetting('EasyMode')) easyMode(); //This needs a UI input
+    if (getPageSetting('EasyMode')) easyMode(); //This needs a UI input
     // no easy mode no script.
     easyMode();
     if (getPageSetting('BuyUpgrades')) buyUpgrades();
