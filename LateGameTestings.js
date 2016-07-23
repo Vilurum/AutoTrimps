@@ -1375,7 +1375,7 @@ function buyJobs() {
             if(buyScientists > 0 && freeWorkers > 0) safeBuyJob('Scientist', buyScientists);
         }
     //once over 100k farmers, fire our scientists and rely on manual gathering of science
-    else if (game.jobs.Scientist.owned < 50000000) { safeBuyJob('Scientist', buyScientists);
+    if (game.jobs.Scientist.owned < 50000000) { safeBuyJob('Scientist', buyScientists);
         //once over 250k farmers, fire our scientists and rely on manual gathering of science
         //else if (game.jobs.Scientist.owned > 0) safeBuyJob('Scientist', game.jobs.Scientist.owned * -1);
     }
