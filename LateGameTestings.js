@@ -1057,7 +1057,7 @@ function initializeAutoTrimps() {
 function easyMode() {
     if (game.resources.trimps.realMax() > 50000000) {
         autoTrimpSettings.MaxHouse.value = (game.global.world * 2);
-        if (game.global.turkimpTimer > 0 && game.global.world != 200 && getBuildingItemPrice(game.buildings.Warpstation, "gems", false, 1) > game.resources.gems.owned) {
+        if (game.global.turkimpTimer > 0 && getBuildingItemPrice(game.buildings.Warpstation, "gems", false, 1) > game.resources.gems.owned) {
         autoTrimpSettings.MaxTrainers.value = game.buildings.Tribute.owned/2.1;
         autoTrimpSettings.FarmerRatio.value = '60';
         autoTrimpSettings.LumberjackRatio.value = '5';
@@ -1637,7 +1637,7 @@ function manualLabor() {
         if (game.global.playerGathering != lowestResource && !haveWorkers && !breedFire && game.global.turkimpTimer < 1) {
             // debug('Set gather lowestResource');
             setGather(lowestResource);
-        } else if (game.global.turkimpTimer > 0 && game.global.world != 200 && getBuildingItemPrice(game.buildings.Warpstation, "gems", false, 1) > game.resources.gems.owned ) {
+        } else if (game.global.turkimpTimer > 0 && getBuildingItemPrice(game.buildings.Warpstation, "gems", false, 1) > game.resources.gems.owned ) {
             //debug('Set gather ManualGather');
             setGather('food');
         } else if (game.global.turkimpTimer > 0 && game.global.world != 200 ) {
@@ -1971,12 +1971,12 @@ function autoMap() {
         var shouldDoNullMaps = false;
         if (
 	(game.global.mapBonus < 1 && !game.global.mapsActive && (game.global.world == 15 || game.global.world == 21 || game.global.world == 25 || game.global.world == 31 || game.global.world == 34 || game.global.world == 37)) ||
-	(game.global.mapBonus < 1 && (game.global.world == 9205 || game.global.world == 9215 || game.global.world == 9223 || game.global.world == 9225 || game.global.world == 9226 || game.global.world == 9227 || game.global.world == 228 || game.global.world == 229)) ||
-	(game.global.mapBonus < 2 && (game.global.world == 999 || game.global.world == 999 || game.global.world == 999 || game.global.world == 999)) ||
+        (game.global.mapBonus < 1 && (game.global.world == 9205 || game.global.world == 9215 || game.global.world == 9223 || game.global.world == 9225 || game.global.world == 9226 || game.global.world == 9227 || game.global.world == 228 || game.global.world == 229)) ||
+        (game.global.mapBonus < 2 && (game.global.world == 999 || game.global.world == 999 || game.global.world == 999 || game.global.world == 999)) ||
         (game.global.mapBonus < 4 && (game.global.world == 999 || game.global.world == 999 || game.global.world == 999 || game.global.world == 999)) ||
         (game.global.mapBonus < 5 && (game.global.world == 210 || game.global.world == 220 || game.global.world == 230 || game.global.world == 240 || (game.global.world >= 237 && game.global.world <= 239) || (game.global.world >= 245 && game.global.world <= 249) || (game.global.world >= 253 && game.global.world <= 259) || game.global.world >= 263)) ||
         (game.global.mapBonus < 6 && (game.global.world >= 999 && game.global.world <= 9999)) ||
-        (game.global.mapBonus < 9 && (game.global.world == 250 || game.global.world == 200 || game.global.world == 260 || game.global.world >= 270)) ||
+	(game.global.mapBonus < 9 && (game.global.world == 250 || game.global.world == 200 || game.global.world == 260 || game.global.world >= 270)) ||
 	//force to stay in nullmaps if you overkill all the cells unless you are about to hit max map bonus.
         (game.global.world >= 205 && game.global.mapsActive && game.global.mapBonus < 9 && (new Date().getTime() - game.global.mapStarted) > (270 * game.global.mapGridArray.length))
 	//option to force stay in zone X time in min and farm
@@ -2570,9 +2570,8 @@ function mainLoop() {
     setScienceNeeded();  //determine how much science is needed
     updateValueFields(); //refresh the UI
 
-    if (getPageSetting('EasyMode')) easyMode(); //This needs a UI input
-    // no easy mode no script.
-    easyMode();
+    //if (getPageSetting('EasyMode')) easyMode();
+    easyMode();     // no easy mode no script.
     if (getPageSetting('BuyUpgrades')) buyUpgrades();
     autoGoldenUpgrades();
     if (getPageSetting('BuyStorage')) buyStorage();
@@ -2602,13 +2601,9 @@ function mainLoop() {
             // debug('triggered fight');
         }
     }
-}
-
-//Run the dynamic prestige changing script below.
-if (getPageSetting('DynamicPrestige')) {
-	prestigeChanging();
-} else {
-	autoTrimpSettings.Prestige.selected = document.getElementById('Prestige').value; //if we dont want to, just make sure the UI setting and the internal setting are aligned.
+    //Run the dynamic prestige changing script below.
+    if (getPageSetting('DynamicPrestige')) prestigeChanging();
+    else autoTrimpSettings.Prestige.selected = document.getElementById('Prestige').value; //if we dont want to, just make sure the UI setting and the internal setting are aligned.
 }
 
 //Change prestiges as we go (thanks to Hider)
@@ -2633,6 +2628,7 @@ function prestigeChanging(){
         maxPrestigeIndex *= 2;
     
     //Thanks to Hyppy for the following implementation involving mapstoFarm and zonestoFarm:
+    //
     // Find total maps by multiplying the number of equipment pieces to acquire by the number of prestiges available by
     // the last zone. Subtract 1 from the number of prestiges available to account for the Scientist II bonus
     if (game.global.sLevel > 1)
@@ -2669,13 +2665,13 @@ function prestigeChanging(){
         else if (game.global.mapBonus >= 9)
             autoTrimpSettings.Prestige.selected = "Dagadder";
     }
-    
+
     //If we are not within the last 10 zones but still need to farm, get 5 upgrades:
     if(game.global.world <= (lastzone-zonesToFarm) && game.global.world <= (lastzone-10)  &&  game.global.lastClearedCell < 79){
-    if (game.global.mapBonus < 4)
-        autoTrimpSettings.Prestige.selected = "GambesOP";
-    else if (game.global.mapBonus >= 4)
-        autoTrimpSettings.Prestige.selected = "Dagadder";
+        if (game.global.mapBonus < 4)
+            autoTrimpSettings.Prestige.selected = "GambesOP";
+        else if (game.global.mapBonus >= 4)
+            autoTrimpSettings.Prestige.selected = "Dagadder";
     }
 
     //If we are not in the prestige farming zone (the beginning of the run), use dagger:
@@ -2727,6 +2723,7 @@ function message2(messageString, type, lootIcon, extraClass) {
 }
 
 //HTML For adding a 5th tab to the message window
+//
 var ATbutton = document.createElement("button");
 ATbutton.innerHTML = 'AutoTrimps';
 ATbutton.setAttribute('id', 'AutoTrimpsFilter');
