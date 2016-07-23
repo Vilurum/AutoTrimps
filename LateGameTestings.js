@@ -475,8 +475,7 @@ function autoHeirlooms2() {
                 carryHeirloom();
             }
         }
-    }
-    else if(heirloomsShown && game.global.selectedHeirloom.length > 0){
+    	else if(heirloomsShown && game.global.selectedHeirloom.length > 0){
         heirloomUpgradeHighlighting();
     }
 }
