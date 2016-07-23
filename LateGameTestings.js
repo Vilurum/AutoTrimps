@@ -2539,6 +2539,7 @@ function autoGoldenUpgrades() {
 //Main Logic Loop///////////////////////
 ////////////////////////////////////////
 
+
 setTimeout(delayStart, startupDelay);
 function delayStart() {
     initializeAutoTrimps();
@@ -2603,14 +2604,7 @@ function mainLoop() {
         }
     }
 }
-function delayStart() {
-    initializeAutoTrimps();
-    setTimeout(delayStartAgain, 2000);
-}
-function delayStartAgain(){
-    setInterval(mainLoop, runInterval);
-    updateCustomButtons();
-}
+
 //Run the dynamic prestige changing script below.
 if (getPageSetting('DynamicPrestige')) {
 	prestigeChanging();
