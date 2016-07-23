@@ -1138,7 +1138,6 @@ function buyUpgrades() {
             buyUpgrade(upgrade, true, true);
             	if(upgrade == 'Coordination') newCoord = true;
             	//debug('bought upgrade ' + upgrade);
-        	}
         }
     }
 }
