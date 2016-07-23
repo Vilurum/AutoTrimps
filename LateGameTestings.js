@@ -2089,13 +2089,11 @@ function autoMap() {
                     break;
                 }
                 if (theMap.name == 'Dimension of Anger' && document.getElementById("portalBtn").style.display == "none") {
-                    var doaDifficulty = Math.ceil(theMap.difficulty / 2);
-                    if(game.global.world < 20 + doaDifficulty) continue; 
                 //    var doaDifficulty = Math.ceil(theMap.difficulty / 2);
                     if(game.global.world > 20) { 
                     shouldDoMap = theMap.id;
                     break;
-                }
+                    }
                 }
                 //run the prison only if we are 'cleared' to run level 80 + 1 level per 200% difficulty. Could do more accurate calc if needed
                 if(theMap.name == 'The Prison' && (game.global.challengeActive == "Electricity" || game.global.challengeActive == "Mapocalypse")) {
