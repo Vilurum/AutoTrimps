@@ -459,7 +459,6 @@ function autoHeirlooms2() {
         }
         sortHeirlooms2();
         //now start by re-filling any empty carried slots with the most highly evaluated heirlooms
-        while (game.global.heirloomsCarried.length < game.global.maxCarriedHeirlooms){
         while ((game.global.heirloomsCarried.length < game.global.maxCarriedHeirlooms) && game.global.heirloomsExtra.length > 0){
             //re-evaluate their worth (needed to refresh the worth array since we for sure re-arranged everything.)
             sortHeirlooms2();
@@ -475,7 +474,8 @@ function autoHeirlooms2() {
                 carryHeirloom();
             }
         }
-    	else if(heirloomsShown && game.global.selectedHeirloom.length > 0){
+    }
+    else if(heirloomsShown && game.global.selectedHeirloom.length > 0){
         heirloomUpgradeHighlighting();
     }
 }
