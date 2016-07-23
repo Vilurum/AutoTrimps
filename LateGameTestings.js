@@ -15,7 +15,8 @@
 ////////////////////////////////////////
 var AutoTrimpsDebugTabVisible = true;
 
-var runInterval = 100; //How often to loop through logicc
+var runInterval = 100; //How often to loop through logic
+var startupDelay = 2000;
 var enableDebug = true; //Spam console?
 var autoTrimpSettings = new Object();
 var bestBuilding;
@@ -211,7 +212,28 @@ function timeStamp() {
     return time.join(":");
 }
 
-
+function getPerSecBeforeManual(job) {
+    var perSec = 0;
+    if (game.jobs[job].owned > 0){
+        perSec = (game.jobs[job].owned * game.jobs[job].modifier);
+        if (game.portal.Motivation.level > 0) perSec += (perSec * game.portal.Motivation.level * game.portal.Motivation.modifier);
+        if (game.portal.Motivation_II.level > 0) perSec *= (1 + (game.portal.Motivation_II.level * game.portal.Motivation_II.modifier));
+        if (game.portal.Meditation.level > 0) perSec *= (1 + (game.portal.Meditation.getBonusPercent() * 0.01)).toFixed(2);
+        if (game.global.challengeActive == "Meditate") perSec *= 1.25;
+        else if (game.global.challengeActive == "Size") perSec *= 1.5;
+        if (game.global.challengeActive == "Toxicity"){
+            var toxMult = (game.challenges.Toxicity.lootMult * game.challenges.Toxicity.stacks) / 100;
+            perSec *= (1 + toxMult);
+        }
+        if (game.global.challengeActive == "Balance"){
+            perSec *= game.challenges.Balance.getGatherMult();
+        }
+        if (game.global.challengeActive == "Watch") perSec /= 2;
+        if (game.global.challengeActive == "Lead" && ((game.global.world % 2) == 1)) perSec*= 2;
+        perSec = calcHeirloomBonus("Staff", job + "Speed", perSec);
+    }
+    return perSec
+}
 
 //Called before buying things that can be purchased in bulk
 function preBuy() {
@@ -235,7 +257,6 @@ function safeBuyBuilding(building) {
         if (game.global.buildingsQueue[b].includes(building)) return false;
     }
 
-
     preBuy();
     game.global.buyAmt = 1;
     if (!canAffordBuilding(building)) {
@@ -254,7 +275,6 @@ function safeBuyBuilding(building) {
     }
     debug('Building ' + building, '*hammer2');
     buyBuilding(building, true, true);
-
 
     postBuy();
     return true;
@@ -362,8 +382,7 @@ function safeBuyJob(jobTitle, amount) {
             game.global.maxSplit = 1;
         }
     }   
-    //debug((game.global.firing ? 'Firing ' : 'Hiring ') + game.global.buyAmt + ' ' + jobTitle);
-
+    //debug((game.global.firing ? 'Firing ' : 'Hiring ') + game.global.buyAmt + ' ' + jobTitle + 's', "*users");
     buyJob(jobTitle, null, true);
     postBuy();
     return true;
@@ -528,13 +547,46 @@ function autoHeirlooms() {
     }
 }
 
-
-
-
-
-
-
-
+//commented out because it was never finished.
+/*
+function autoSwapHeirlooms(loomtype="Shield" || "Staff", loomlocation="heirloomsCarried" || "heirloomsExtra"){
+    var bestfooddroploom = [];
+    var bestwooddroploom = [];
+    var bestmetaldroploom = [];
+    var bestgemdroploom = [];
+    
+    //search in loomlocation="heirloomsCarried" or "heirloomsExtra"
+    for(var eachloom in game.global[loomlocation]) {
+        var theLoom = game.global[loomlocation][eachloom];
+        if (theLoom.type != loomtype)
+            continue;
+        var effRating = evaluateMods(eachloom,loomlocation);
+    } 
+    if(loomlocation.includes('Equipped'))
+        loom = game.global[loomlocation];
+    else
+        loom = game.global[loomlocation][loom];
+    
+    //---------- SHIELD SWAP FUNCTION (search on critdamage and swap)---
+    var count = 0;
+    for (var carried in game.global.heirloomsCarried){
+        var heirloom = game.global.heirloomsCarried[carried];
+        for (var item in heirloom.mods){
+            if (item[0] == "critDamage" && item[1] > 300){
+                unequipHeirloom(game.global.ShieldEquipped, "heirloomsCarried");
+                game.global.ShieldEquipped = heirloom;
+                game.global.heirloomsCarried.splice(count, 1);
+            }
+        }
+        count++;
+    }
+    for (var item in heirloom.mods){
+        game.heirlooms[heirloom.type][heirloom.mods[item][0]].currentBonus += heirloom.mods[item][1];
+    }
+    populateHeirloomWindow();    
+    //-------OK------
+}
+*/
 
 
 //Determines the best heirloom mods
@@ -1002,11 +1054,15 @@ function getBreedTime(remaining,round) {
 function initializeAutoTrimps() {
     debug('AutoTrimps Loaded!', '*spinner3');
     loadPageVariables();
-    javascript: with(document)(head.appendChild(createElement('script')).src = 'https://genbtc.github.io/AutoTrimps/NewUI.js')._;
-    javascript: with(document)(head.appendChild(createElement('script')).src = 'https://genbtc.github.io/AutoTrimps/Graphs.js')._;
-    //needed for local testing.
-    //javascript:with(document)(head.appendChild(createElement('script')).src = 'https://localhost:4445/NewUI.js')._;
-    //javascript:with(document)(head.appendChild(createElement('script')).src = 'https://localhost:4445/Graphs.js')._;    
+
+    var atscript = document.getElementById('AutoTrimps-script')
+      , base = 'https://genbtc.github.io/AutoTrimps'
+      ;
+    if (atscript !== null) {
+        base = atscript.getAttribute('src').replace(/\/AutoTrimps2\.js$/, '');
+    }
+    document.head.appendChild(document.createElement('script')).src = base + '/NewUI.js';
+    document.head.appendChild(document.createElement('script')).src = base + '/Graphs.js';
     toggleSettingsMenu();
     toggleSettingsMenu();
 }
@@ -2538,6 +2594,16 @@ function autoGoldenUpgrades() {
 //Main Logic Loop///////////////////////
 ////////////////////////////////////////
 
+setTimeout(delayStart, startupDelay);
+function delayStart() {
+    initializeAutoTrimps();
+    setTimeout(delayStartAgain, startupDelay);
+}
+function delayStartAgain(){
+    setInterval(mainLoop, runInterval);
+    updateCustomButtons();
+    document.getElementById('Prestige').value = autoTrimpSettings.PrestigeBackup.selected;
+}
 
 
 
@@ -2554,12 +2620,21 @@ var stopScientistsatFarmers = 250000;
 function mainLoop() {
     stopScientistsatFarmers = 250000;   //put this here so it reverts every cycle (in case we portal out of watch challenge)
     game.global.addonUser = true;
-
+    game.global.autotrimps = {
+        firstgiga: getPageSetting('FirstGigastation'),
+        deltagiga: getPageSetting('DeltaGigastation')
+    }    
     if(getPageSetting('PauseScript')) return;
     if(game.global.viewingUpgrades) return;
-    setTitle();
-    setScienceNeeded();
-    updateValueFields();
+    //auto-close breaking the world textbox
+    if(document.getElementById('tipTitle').innerHTML == 'The Improbability') cancelTooltip();
+    //auto-close the corruption at zone 181 textbox
+    if(document.getElementById('tipTitle').innerHTML == 'Corruption') cancelTooltip();
+    //auto-close the Spire notification checkbox
+    if(document.getElementById('tipTitle').innerHTML == 'Spire') cancelTooltip();
+    setTitle();          //set the browser title
+    setScienceNeeded();  //determine how much science is needed
+    updateValueFields(); //refresh the UI
 
     if (getPageSetting('EasyMode')) easyMode(); //This needs a UI input
     // no easy mode no script.
@@ -2679,10 +2754,12 @@ if(game.global.world <= (lastzone-zonesToFarm) && game.global.world <= (lastzone
         autoTrimpSettings.Prestige.selected = "GambesOP";
     else if (game.global.mapBonus >= 4)
         autoTrimpSettings.Prestige.selected = "Dagadder";
+
     //If we are not in the prestige farming zone (the beginning of the run), use dagger:
     if (game.global.world < lastzone-zonesToFarm || game.global.mapBonus == 10)  
        autoTrimpSettings.Prestige.selected = "Dagadder";
 }
+
 
 //we copied message function because this was not able to be called from function debug() without getting a weird scope? related "cannot find function" error.
 var lastmessagecount = 1;
