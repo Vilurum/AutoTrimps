@@ -1136,8 +1136,9 @@ function buyUpgrades() {
         if (upgrade == 'Gigastation' && (game.global.lastWarp ? game.buildings.Warpstation.owned < (game.global.lastWarp + getPageSetting('DeltaGigastation') + 8 - gameUpgrade.allowed + gameUpgrade.done) : game.buildings.Warpstation.owned < getPageSetting('FirstGigastation'))) continue;
         if ((!game.upgrades.Scientists.done && upgrade != 'Battle') ? (available && upgrade == 'Scientists' && game.upgrades.Scientists.allowed) : (available)) {
             buyUpgrade(upgrade, true, true);
-            	if(upgrade == 'Coordination') newCoord = true;
-            	//debug('bought upgrade ' + upgrade);
+            if(upgrade == 'Coordination') newCoord = true;
+            //debug('bought upgrade ' + upgrade);
+            }
         }
     }
 }
@@ -1159,7 +1160,7 @@ function buyStorage() {
             jest = simpleSeconds(Bs[B], 45);
             jest = scaleToCurrentMap(jest);
         }
-        if ((game.global.world < 10 && owned > max * 0.1) || owned > max * 0.6 || owned + jest > max * 0.6) {
+<Merge Conflict>
             // debug('Buying ' + B + '(' + Bs[B] + ') at ' + Math.floor(game.resources[Bs[B]].owned / (game.resources[Bs[B]].max * packMod * 0.99) * 100) + '%');
             if (canAffordBuilding(B)) {
                 safeBuyBuilding(B);
@@ -1393,7 +1394,7 @@ freeWorkers = Math.ceil(game.resources.trimps.realMax() / 2) - game.resources.tr
         var canBuy = Math.floor(trimps.owned - trimps.employed);
         safeBuyJob('Miner',toBuy <= canBuy ? toBuy : canBuy);
     }
-    else if(breedFire)
+    else if(breedFire && game.global.turkimpTimer === 0)
         safeBuyJob('Miner', game.jobs.Miner.owned * -1);
     //Buy/Fire Lumberjacks:
     if(!game.jobs.Lumberjack.locked && !breedFire) {
@@ -1897,8 +1898,7 @@ function autoMap() {
                                  (game.global.world >= voidMapLevelSettingZone && getPageSetting('RunNewVoids')))
                          && ((voidsuntil != -1 && game.global.world <= voidsuntil) || (voidsuntil == -1) || !getPageSetting('RunNewVoids')) ;
     if (game.global.mapsUnlocked) {
-        var enemyDamage = getEnemyMaxAttack(game.global.world + 1, 30, 'Snimp', .85);
-        var enemyHealth = getEnemyMaxHealth(game.global.world + 1);
+
       
         needPrestige = (autoTrimpSettings.Prestige.selected != "Off" && game.mapUnlocks[autoTrimpSettings.Prestige.selected].last <= game.global.world - 5 && game.global.mapsUnlocked && game.global.challengeActive != "Frugal");
         if(game.global.challengeActive == "Toxicity") {
@@ -2537,12 +2537,9 @@ function manageGenes() {
     else if ((targetBreed < getBreedTime(true) || (game.resources.trimps.soldiers == 0 && getBreedTime(true) > 0.2)) && breedFire == false && (getPageSetting('BreedFire') || (game.global.world == 200)) && game.global.world > 10) {
         breedFire = true;
     }
-    /*    
         //really should be integrated with the buyBuildings routine instead of here, but I think it's mostly harmless here
         else if (targetBreed < getBreedTime() && getPageSetting('ManageBreedtimer') && !game.buildings.Nursery.locked) {
             safeBuyBuilding('Nursery');
-        }
-    */
 
     //reset breedFire once we have less than 2 seconds remaining
     if(getBreedTime(true) < 0.4) breedFire = false;
@@ -2861,5 +2858,4 @@ function generateHeirloomIcon(heirloom, location, number){
     html += '" onmouseover="tooltip(\'Heirloom\', null, event, null, ' + locText + ')" onmouseout="tooltip(\'hide\')" onclick="newSelectHeirloom(';
     html += locText + ', this)"> <span class="' + icon + '"></span></span>';
     return html;
-}
 }
