@@ -1394,17 +1394,17 @@ function buyJobs() {
         var canBuy = Math.floor(trimps.owned - trimps.employed);
         safeBuyJob('Miner',toBuy <= canBuy ? toBuy : canBuy);
     }
-    else if(breedFire && game.global.turkimpTimer === 0)
+    if(breedFire && game.global.turkimpTimer === 0) {
         safeBuyJob('Miner', game.jobs.Miner.owned * -1);
     //Buy/Fire Lumberjacks:
+    }
     if(!game.jobs.Lumberjack.locked && !breedFire) {
         var toBuy = Math.floor((lumberjackRatio / totalRatio * totalDistributableWorkers) - game.jobs.Lumberjack.owned);
         var canBuy = Math.floor(trimps.owned - trimps.employed);
         safeBuyJob('Lumberjack',toBuy <= canBuy ? toBuy : canBuy);
     }
-    else if(breedFire)
-        safeBuyJob('Lumberjack', game.jobs.Lumberjack.owned * -1);    
-
+    if(breedFire) {
+        safeBuyJob('Lumberjack', game.jobs.Lumberjack.owned * -1);
 
 }
 
