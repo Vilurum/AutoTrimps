@@ -1994,7 +1994,7 @@ function autoMap() {
         (game.global.mapBonus < 6 && (game.global.world >= 999 && game.global.world <= 9999)) ||
 	(game.global.mapBonus < 9 && (game.global.world == 250 || game.global.world == 200 || game.global.world == 260 || game.global.world >= 270)) ||
 	//force to stay in nullmaps if you overkill all the cells unless you are about to hit max map bonus.
-        (game.global.world >= 205 && game.global.mapsActive && game.global.mapBonus < 9 && (new Date().getTime() - game.global.mapStarted) > (270 * game.global.mapGridArray.length)) ||
+        (game.global.world >= 205 && game.global.mapsActive && game.global.mapBonus < 9 && (new Date().getTime() - game.global.mapStarted) > (270 * game.global.mapGridArray.length))
 	//option to force stay in zone X time in min and farm
         //(game.global.world == 200 && game.global.lastClearedCell > 20 ((new Date().getTime() - game.global.zoneStarted) / 1000 / 60) < 10)
 	) {
