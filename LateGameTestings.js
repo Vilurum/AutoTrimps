@@ -1,4 +1,3 @@
-
 // ==UserScript==
 // @name         AutoTrimpsV2+genBTC
 // @namespace    http://tampermonkey.net/
@@ -16,8 +15,7 @@
 ////////////////////////////////////////
 var AutoTrimpsDebugTabVisible = true;
 
-var runInterval = 100; //How often to loop through logic
-var startupDelay = 2000;
+var runInterval = 100; //How often to loop through logicc
 var enableDebug = true; //Spam console?
 var autoTrimpSettings = new Object();
 var bestBuilding;
@@ -33,6 +31,8 @@ var newCoord = false;
 var letItGo = 0;
 var Gigas = 0;
 var WarpstationWall = false;
+
+
 
 
 
@@ -211,28 +211,7 @@ function timeStamp() {
     return time.join(":");
 }
 
-function getPerSecBeforeManual(job) {
-    var perSec = 0;
-    if (game.jobs[job].owned > 0){
-        perSec = (game.jobs[job].owned * game.jobs[job].modifier);
-        if (game.portal.Motivation.level > 0) perSec += (perSec * game.portal.Motivation.level * game.portal.Motivation.modifier);
-        if (game.portal.Motivation_II.level > 0) perSec *= (1 + (game.portal.Motivation_II.level * game.portal.Motivation_II.modifier));
-        if (game.portal.Meditation.level > 0) perSec *= (1 + (game.portal.Meditation.getBonusPercent() * 0.01)).toFixed(2);
-        if (game.global.challengeActive == "Meditate") perSec *= 1.25;
-        else if (game.global.challengeActive == "Size") perSec *= 1.5;
-        if (game.global.challengeActive == "Toxicity"){
-            var toxMult = (game.challenges.Toxicity.lootMult * game.challenges.Toxicity.stacks) / 100;
-            perSec *= (1 + toxMult);
-        }
-        if (game.global.challengeActive == "Balance"){
-            perSec *= game.challenges.Balance.getGatherMult();
-        }
-        if (game.global.challengeActive == "Watch") perSec /= 2;
-        if (game.global.challengeActive == "Lead" && ((game.global.world % 2) == 1)) perSec*= 2;
-        perSec = calcHeirloomBonus("Staff", job + "Speed", perSec);
-    }
-    return perSec
-}
+
 
 //Called before buying things that can be purchased in bulk
 function preBuy() {
@@ -383,7 +362,8 @@ function safeBuyJob(jobTitle, amount) {
             game.global.maxSplit = 1;
         }
     }   
-    //debug((game.global.firing ? 'Firing ' : 'Hiring ') + game.global.buyAmt + ' ' + jobTitle + 's', "*users");
+    //debug((game.global.firing ? 'Firing ' : 'Hiring ') + game.global.buyAmt + ' ' + jobTitle);
+
     buyJob(jobTitle, null, true);
     postBuy();
     return true;
@@ -459,6 +439,7 @@ function autoHeirlooms2() {
             if ((theLoom.protected) && (game.global.heirloomsCarried.length < game.global.maxCarriedHeirlooms)){
                 selectHeirloom(index, 'heirloomsExtra');
                 carryHeirloom();
+
             }
         }
         sortHeirlooms2();
@@ -1133,6 +1114,7 @@ function buyStorage() {
         }
         if (canAffordBuilding(B)) {
             safeBuyBuilding(B);
+
         }
         if (getPageSetting('ManualGather')) {
             setGather('buildings');
@@ -1193,6 +1175,7 @@ function buyStorage() {
        //var list = [61,62,63,64,65,66,67,68,69,70,72,74,76,78,81,84,87,90,95,100,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175,180,190,200,210,220,230,240,250,260,270,280,290,300];
 
 
+
        
         //Prestige list:
         //2'Dagger''Dagadder',4'Mace''Megamace',6'Polearm''Polierarm',8'Battleaxe''Axeidic',10'Greatsword''Greatersword',
@@ -1212,6 +1195,7 @@ function buyStorage() {
            document.getElementById('Prestige').selectedIndex = 0;
            autoTrimpSettings.Prestige.selected = "Off";
         }
+
 
     }
 }
@@ -1369,7 +1353,7 @@ freeWorkers = Math.ceil(game.resources.trimps.realMax() / 2) - game.resources.tr
         var canBuy = Math.floor(trimps.owned - trimps.employed);
         safeBuyJob('Miner',toBuy <= canBuy ? toBuy : canBuy);
     }
-    else if(breedFire && game.global.turkimpTimer === 0)
+    else if(breedFire)
         safeBuyJob('Miner', game.jobs.Miner.owned * -1);
     //Buy/Fire Lumberjacks:
     if(!game.jobs.Lumberjack.locked && !breedFire) {
@@ -2516,9 +2500,7 @@ function manageGenes() {
         breedFire = true;
     }
 
-        //really should be integrated with the buyBuildings routine instead of here, but I think it's mostly harmless here
-        else if (targetBreed < getBreedTime() && getPageSetting('ManageBreedtimer') && !game.buildings.Nursery.locked) {
-            safeBuyBuilding('Nursery');
+
 
 
     //reset breedFire once we have less than 2 seconds remaining
@@ -2556,37 +2538,28 @@ function autoGoldenUpgrades() {
 //Main Logic Loop///////////////////////
 ////////////////////////////////////////
 
-setTimeout(delayStart, startupDelay);
-function delayStart() {
-    initializeAutoTrimps();
-    setTimeout(delayStartAgain, startupDelay);
-}
-function delayStartAgain(){
-    setInterval(mainLoop, runInterval);
-    updateCustomButtons();
-    document.getElementById('Prestige').value = autoTrimpSettings.PrestigeBackup.selected;
-}
 
 
 
+//This is totally cheating Only use for debugging
+// game.settings.speed = 1;
+// game.settings.speedTemp = 1;
+// setTimeout(function() {
+//     game.settings.speed = 2;
+// }, 1000);
+
+setTimeout(delayStart, 2000);
+
+var stopScientistsatFarmers = 250000;
 function mainLoop() {
     stopScientistsatFarmers = 250000;   //put this here so it reverts every cycle (in case we portal out of watch challenge)
     game.global.addonUser = true;
-    game.global.autotrimps = {
-        firstgiga: getPageSetting('FirstGigastation'),
-        deltagiga: getPageSetting('DeltaGigastation')
-    }    
+
     if(getPageSetting('PauseScript')) return;
     if(game.global.viewingUpgrades) return;
-    //auto-close breaking the world textbox
-    if(document.getElementById('tipTitle').innerHTML == 'The Improbability') cancelTooltip();
-    //auto-close the corruption at zone 181 textbox
-    if(document.getElementById('tipTitle').innerHTML == 'Corruption') cancelTooltip();
-    //auto-close the Spire notification checkbox
-    if(document.getElementById('tipTitle').innerHTML == 'Spire') cancelTooltip();
-    setTitle();          //set the browser title
-    setScienceNeeded();  //determine how much science is needed
-    updateValueFields(); //refresh the UI
+    setTitle();
+    setScienceNeeded();
+    updateValueFields();
 
     if (getPageSetting('EasyMode')) easyMode(); //This needs a UI input
     // no easy mode no script.
@@ -2604,6 +2577,7 @@ function mainLoop() {
     else if (getPageSetting('AutoHeirlooms')) autoHeirlooms();
     if (getPageSetting('TrapTrimps') && game.global.trapBuildAllowed && game.global.trapBuildToggled == false) toggleAutoTrap();
     if (getPageSetting('AutoRoboTrimp')) autoRoboTrimp();
+
 
 
     autoLevelEquipment();
@@ -2686,7 +2660,15 @@ function prestigeChanging(){
         else if (game.global.mapBonus >= 9)
             autoTrimpSettings.Prestige.selected = "Dagadder";
     }
-   
+function delayStart() {
+    initializeAutoTrimps();
+    setTimeout(delayStartAgain, 2000);
+}
+function delayStartAgain(){
+    setInterval(mainLoop, runInterval);
+    updateCustomButtons();
+    //setInterval(updateCustomButtons, 10000);
+}
     //If we are not within the last 10 zones but still need to farm, get 5 upgrades:
     if(game.global.world <= (lastzone-zonesToFarm) && game.global.world <= (lastzone-10)  &&  game.global.lastClearedCell < 79){
         if (game.global.mapBonus < 4)
