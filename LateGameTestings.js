@@ -1313,8 +1313,9 @@ function buyJobs() {
     if (game.global.world > 180) {
         scientistRatio = totalRatio / 9999;
     }
-    
 
+
+    
     if (game.global.challengeActive == 'Watch'){
         scientistRatio = totalRatio / 10;
         stopScientistsatFarmers = 1e8;
@@ -1338,10 +1339,10 @@ function buyJobs() {
     
 
     var oldBuy = game.global.buyAmt;
-    
+
     //Simple buy if you can
     if (getPageSetting('MaxTrainers') > game.jobs.Trainer.owned || getPageSetting('MaxTrainers') == -1) {
-            game.global.buyAmt = 1;
+        game.global.buyAmt = 1;
         if (canAffordJob('Trainer', false) &&  game.jobs.Trainer.cost.food[0]*Math.pow(game.jobs.Trainer.cost.food[1],game.jobs.Trainer.owned)*2 < game.resources.food.owned) {
             freeWorkers = Math.ceil(game.resources.trimps.realMax() / 2) - game.resources.trimps.employed;
             if (freeWorkers <= 0) safeBuyJob('Farmer', -1);
@@ -1356,26 +1357,24 @@ function buyJobs() {
             safeBuyJob('Explorer');
         }
     }
-    game.global.buyAmt = oldBuy;
-    freeWorkers = Math.ceil(game.resources.trimps.realMax() / 2) - game.resources.trimps.employed;
+game.global.buyAmt = oldBuy;
+freeWorkers = Math.ceil(game.resources.trimps.realMax() / 2) - game.resources.trimps.employed;
     if (getPageSetting('HireScientists') && !game.jobs.Scientist.locked) {
+    //if earlier in the game, buy a small amount of scientists
         //if earlier in the game, buy a small amount of scientists
-	//if (game.jobs.Farmer.owned < stopScientistsatFarmers && !breedFire) {
-	}
-        if (game.jobs.Farmer.owned < 250000 && !breedFire) {
+    if (game.jobs.Farmer.owned < 250000 && !breedFire) {
         var buyScientists = Math.floor((scientistRatio / totalRatio * totalDistributableWorkers) - game.jobs.Scientist.owned);
         //bandaid to prevent situation where 1 scientist is bought, causing floor calculation to drop by 1, making next calculation -1 and entering hiring/firing loop
         //proper fix is including scientists in totalDistributableWorkers and the scientist ratio in the total ratio, but then it waits for 4 jobs
-        }
         if(buyScientists > 0 && freeWorkers > 0) safeBuyJob('Scientist', buyScientists);
-        }
+    }
             var buyScientists = Math.floor((scientistRatio / totalRatio * totalDistributableWorkers) - game.jobs.Scientist.owned);
             //bandaid to prevent situation where 1 scientist is bought, causing floor calculation to drop by 1, making next calculation -1 and entering hiring/firing loop
             //proper fix is including scientists in totalDistributableWorkers and the scientist ratio in the total ratio, but then it waits for 4 jobs
             if(buyScientists > 0 && freeWorkers > 0) safeBuyJob('Scientist', buyScientists);
         }
     //once over 100k farmers, fire our scientists and rely on manual gathering of science
-    if (game.jobs.Scientist.owned < 50000000) { safeBuyJob('Scientist', buyScientists);
+    else if (game.jobs.Scientist.owned < 50000000) { safeBuyJob('Scientist', buyScientists);
         //once over 250k farmers, fire our scientists and rely on manual gathering of science
         //else if (game.jobs.Scientist.owned > 0) safeBuyJob('Scientist', game.jobs.Scientist.owned * -1);
     }
@@ -1394,17 +1393,17 @@ function buyJobs() {
         var canBuy = Math.floor(trimps.owned - trimps.employed);
         safeBuyJob('Miner',toBuy <= canBuy ? toBuy : canBuy);
     }
-    if(breedFire && game.global.turkimpTimer === 0) {
+    else if(breedFire)
         safeBuyJob('Miner', game.jobs.Miner.owned * -1);
     //Buy/Fire Lumberjacks:
-    }
     if(!game.jobs.Lumberjack.locked && !breedFire) {
         var toBuy = Math.floor((lumberjackRatio / totalRatio * totalDistributableWorkers) - game.jobs.Lumberjack.owned);
         var canBuy = Math.floor(trimps.owned - trimps.employed);
         safeBuyJob('Lumberjack',toBuy <= canBuy ? toBuy : canBuy);
     }
-    if(breedFire) {
-        safeBuyJob('Lumberjack', game.jobs.Lumberjack.owned * -1);
+    else if(breedFire)
+        safeBuyJob('Lumberjack', game.jobs.Lumberjack.owned * -1);    
+
 
 }
 
