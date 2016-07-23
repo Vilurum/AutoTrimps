@@ -391,90 +391,175 @@ function getScienceCostToUpgrade(upgrade) {
 
 //OLD:
 var worth = {'Shield': {}, 'Staff': {}};
-function sortHeirlooms(){
-    worth = {'Shield': {}, 'Staff': {}};
-    for (var loom in game.global.heirloomsExtra) {
-        var theLoom = game.global.heirloomsExtra[loom];
-        worth[theLoom.type][loom] = theLoom.rarity;
-    }
 
-    //sort high to low value, priority on rarity, followed by mod evaluation
-    for (var x in worth){
-        worth[x] = Object.keys(worth[x]).sort(function(a, b) {
-            if(worth[x][b] == worth[x][a]) {
-                return evaluateMods(b, 'heirloomsExtra') - evaluateMods(a, 'heirloomsExtra');
+function worthOfHeirlooms(){
+    worth = {'Shield': {}, 'Staff': {}};		    worth = {'Shield': {}, 'Staff': {}};
+    for (var loom in game.global.heirloomsExtra) {		    for (var loom in game.global.heirloomsExtra) {
+        var theLoom = game.global.heirloomsExtra[loom];		        var theLoom = game.global.heirloomsExtra[loom];
+        worth[theLoom.type][loom] = theLoom.rarity;		        worth[theLoom.type][loom] = theLoom.rarity;
+    }		    }
+    //sort high to low value, priority on rarity, followed by mod evaluation		    //sort high to low value, priority on rarity, followed by mod evaluation
+    for (var x in worth){		    for (var x in worth){
+        worth[x] = Object.keys(worth[x]).sort(function(a, b) {		        worth[x] = Object.keys(worth[x]).sort(function(a, b) {
+            if(worth[x][b] == worth[x][a]) {		            if(worth[x][b] == worth[x][a]) {
+                return evaluateMods(b, 'heirloomsExtra') - evaluateMods(a, 'heirloomsExtra');		                return evaluateMods(b, 'heirloomsExtra') - evaluateMods(a, 'heirloomsExtra');
+            }		            }
+            else		            else
+                return worth[x][b] - worth[x][a];		                return worth[x][b] - worth[x][a];
+        });		        });
+    }		    }
+}		}
+//NEW:		//NEW:
+//makes an array of heirlooms sitting in the temporary extra area to indicate to the autoHeirlooms2() function which to Carry/Drop
+var worth2 = {'Shield': [], 'Staff': []};		var worth2 = {'Shield': [], 'Staff': []};
+function sortHeirlooms2(){		function worthOfHeirlooms2(){
+    worth2 = {'Shield': [], 'Staff': []};		    worth2 = {'Shield': [], 'Staff': []};
+    for (var index in game.global.heirloomsExtra) {		    for (var index in game.global.heirloomsExtra) {
+        var theLoom = game.global.heirloomsExtra[index];		        var theLoom = game.global.heirloomsExtra[index];
+        var data = {'location': 'heirloomsExtra', 'index': index, 'rarity': theLoom.rarity, 'eff': evaluateMods(index, 'heirloomsExtra')};		        var data = {'location': 'heirloomsExtra', 'index': index, 'rarity': theLoom.rarity, 'eff': evaluateMods(index, 'heirloomsExtra')};
+        worth2[theLoom.type].push(data);		        worth2[theLoom.type].push(data);
+    }		    }
+    //sort algorithm: high to low value, priority on rarity, followed by mod evaluation		    //sort algorithm: high to low value, priority on rarity, followed by mod evaluation
+    var valuesort = function(a, b) {		    var valuesort = function(a, b) {
+        if(b.rarity == a.rarity) {		        if(b.rarity == a.rarity) {
+            return b.eff - a.eff;		            return b.eff - a.eff;
+        }		        }
+        else		        else
+            return b.rarity - a.rarity;		            return b.rarity - a.rarity;
+    };		    };
+    // sort shield 		    // sort shield 
+    worth2['Shield'].sort(valuesort);		    worth2['Shield'].sort(valuesort);
+    // sort staff		    // sort staff
+    worth2['Staff'].sort(valuesort);		    worth2['Staff'].sort(valuesort);
+}		}
+//Automatically evaluate and carry the best heirlooms, and recommend upgrades for equipped items. AutoHeirlooms will only change carried items when the heirlooms window is not open. Carried items will be compared and swapped with the types that are already carried. If a carry spot is empty, it will be filled with the best shield (if available). Evaluation is based ONLY on the following mods (listed in order of priority, high to low): Void Map Drop Chance/Trimp Attack, Crit Chance/Crit Damage, Miner Efficiency/Metal Drop, Gem Drop/Dragimp Efficiency, Farmer/Lumberjack Efficiency. For the purposes of carrying, rarity trumps all of the stat evaluations. Empty mod slots are valued at the average value of the best missing mod.
+//NEW:		//NEW:
+function autoHeirlooms2() {		function autoHeirlooms2() {
+    if(!heirloomsShown && game.global.heirloomsExtra.length > 0){		    if(!heirloomsShown && game.global.heirloomsExtra.length > 0){
+        //start by dropping ALL carried heirlooms		        //PART 1: start by dropping ALL carried heirlooms
+        var originalLength = game.global.heirloomsCarried.length;		        var originalLength = game.global.heirloomsCarried.length;
+        for(var index=0; index < originalLength; index++) {		        for(var index=0; index < originalLength; index++) {
+            selectHeirloom(0, 'heirloomsCarried');		            selectHeirloom(0, 'heirloomsCarried');
+            stopCarryHeirloom();		            stopCarryHeirloom();
+        }		        }
+        //immediately begin carrying any protected heirlooms.		        //PART 2: immediately begin carrying any protected heirlooms.
+        for(var index in game.global.heirloomsExtra) {		        for(var index in game.global.heirloomsExtra) {
+            var theLoom = game.global.heirloomsExtra[index];		            var theLoom = game.global.heirloomsExtra[index];
+            if ((theLoom.protected) && (game.global.heirloomsCarried.length < game.global.maxCarriedHeirlooms)){		            if ((theLoom.protected) && (game.global.heirloomsCarried.length < game.global.maxCarriedHeirlooms)){
+                selectHeirloom(index, 'heirloomsExtra');		                selectHeirloom(index, 'heirloomsExtra');
+                carryHeirloom();		                carryHeirloom();
+            }		            }
+        }		        }
+        sortHeirlooms2();		        worthOfHeirlooms2();
+        //now start by re-filling any empty carried slots with the most highly evaluated heirlooms		        //now start by re-filling any empty carried slots with the most highly evaluated heirlooms
+        //Alternates EQUALLY between Shield and Staff, putting the best ones of each.
+        //PART 3:
+        while ((game.global.heirloomsCarried.length < game.global.maxCarriedHeirlooms) && game.global.heirloomsExtra.length > 0){		        while ((game.global.heirloomsCarried.length < game.global.maxCarriedHeirlooms) && game.global.heirloomsExtra.length > 0){
+            //re-evaluate their worth (needed to refresh the worth array since we for sure re-arranged everything.)		            //re-evaluate their worth (needed to refresh the worth array since we for sure re-arranged everything.)
+            sortHeirlooms2();		            worthOfHeirlooms2();
+            if (worth2["Shield"].length > 0){		            if (worth2["Shield"].length > 0){
+                var carryshield = worth2["Shield"].shift();		                var carryshield = worth2["Shield"].shift();
+                selectHeirloom(carryshield.index, 'heirloomsExtra');		                selectHeirloom(carryshield.index, 'heirloomsExtra');
+                carryHeirloom();		                carryHeirloom();
+            }		            }
+            sortHeirlooms2();		            worthOfHeirlooms2();
+            if (worth2["Staff"].length > 0){		            if (worth2["Staff"].length > 0){
+                var carrystaff = worth2["Staff"].shift();		                var carrystaff = worth2["Staff"].shift();
+                selectHeirloom(carrystaff.index, 'heirloomsExtra');		                selectHeirloom(carrystaff.index, 'heirloomsExtra');
+                carryHeirloom();		                carryHeirloom();
+            }		            }
+        }		        }
+        worthOfHeirlooms();
+        // Doing the Alternating Shield/Staff method above can cause good heirlooms to remain un-carried, just because the above was trying to hard to balance.
+        // example: It picks up 4 ethereal shields and 2 ethereal staffs and 2 bad rare staffs, but there was actually a 5th good ethereal shield that it skipped.
+        //          this will replace the lesser rarity or stat with the higher rarity or stat, either shield or staff.
+        //PART 4:        
+        //Check each carried heirloom....
+        for(var carried in game.global.heirloomsCarried) {
+            var theLoom = game.global.heirloomsCarried[carried];
+            //... against the Opposite type
+            var opposite = {"Shield":"Staff", "Staff":"Shield"};
+            if(worth[opposite[theLoom.type]].length == 0) continue; //end loop quick if absolutely nothin to swap in
+            var index = worth[opposite[theLoom.type]][0];
+            //... and compare the carried against the best worth opposite type in the extra pile. (since part 3 above took care of the bests of each same type)
+            if(theLoom.rarity < game.global.heirloomsExtra[index].rarity || (theLoom.rarity == game.global.heirloomsExtra[index].rarity && evaluateMods(carried, 'heirloomsCarried') < evaluateMods(index, 'heirloomsExtra'))) {
+                if (!theLoom.protected){
+                    selectHeirloom(carried, 'heirloomsCarried');
+                    stopCarryHeirloom();
+                    selectHeirloom(index, 'heirloomsExtra');
+                    carryHeirloom();
+                    worthOfHeirlooms();
+                }
+                //do nothing if the carried thing was protected.
             }
-            else
-                return worth[x][b] - worth[x][a];
-        });
-    }
-}
-
-//NEW:
-var worth2 = {'Shield': [], 'Staff': []};
-function sortHeirlooms2(){
-    worth2 = {'Shield': [], 'Staff': []};
-    for (var index in game.global.heirloomsExtra) {
-        var theLoom = game.global.heirloomsExtra[index];
-        var data = {'location': 'heirloomsExtra', 'index': index, 'rarity': theLoom.rarity, 'eff': evaluateMods(index, 'heirloomsExtra')};
-        worth2[theLoom.type].push(data);
-    }
-    //sort algorithm: high to low value, priority on rarity, followed by mod evaluation
-    var valuesort = function(a, b) {
-        if(b.rarity == a.rarity) {
-            return b.eff - a.eff;
-        }
-        else
-            return b.rarity - a.rarity;
-    };
-    // sort shield 
-    worth2['Shield'].sort(valuesort);
-    // sort staff
-    worth2['Staff'].sort(valuesort);
-}
-
-//NEW:
-function autoHeirlooms2() {
-    if(!heirloomsShown && game.global.heirloomsExtra.length > 0){
-        //start by dropping ALL carried heirlooms
-        var originalLength = game.global.heirloomsCarried.length;
-        for(var index=0; index < originalLength; index++) {
-            selectHeirloom(0, 'heirloomsCarried');
-            stopCarryHeirloom();
-        }
-        //immediately begin carrying any protected heirlooms.
-        for(var index in game.global.heirloomsExtra) {
-            var theLoom = game.global.heirloomsExtra[index];
-            if ((theLoom.protected) && (game.global.heirloomsCarried.length < game.global.maxCarriedHeirlooms)){
-                selectHeirloom(index, 'heirloomsExtra');
-                carryHeirloom();
-
-            }
-        }
-        sortHeirlooms2();
-        //now start by re-filling any empty carried slots with the most highly evaluated heirlooms
-        while ((game.global.heirloomsCarried.length < game.global.maxCarriedHeirlooms) && game.global.heirloomsExtra.length > 0){
-            //re-evaluate their worth (needed to refresh the worth array since we for sure re-arranged everything.)
-            sortHeirlooms2();
-            if (worth2["Shield"].length > 0){
-                var carryshield = worth2["Shield"].shift();
-                selectHeirloom(carryshield.index, 'heirloomsExtra');
-                carryHeirloom();
-            }
-            sortHeirlooms2();
-            if (worth2["Staff"].length > 0){
-                var carrystaff = worth2["Staff"].shift();
-                selectHeirloom(carrystaff.index, 'heirloomsExtra');
-                carryHeirloom();
-            }
-        }
-    }
-    else if(heirloomsShown && game.global.selectedHeirloom.length > 0){
-        heirloomUpgradeHighlighting();
-    }
-}
-
+        }        
+    }		    }
+    else if(heirloomsShown && game.global.selectedHeirloom.length > 0){		    else if(heirloomsShown && game.global.selectedHeirloom.length > 0){
+        heirloomUpgradeHighlighting();		        heirloomUpgradeHighlighting();
+    }		    }
+}		}
+//common to both autoheirloom1 and 2		
+function heirloomUpgradeHighlighting() {		
+    var bestUpgrade;		
+    if(game.global.selectedHeirloom[1].includes('Equipped')) {		
+        var loom = game.global[game.global.selectedHeirloom[1]];		
+        bestUpgrade = evaluateMods(0, game.global.selectedHeirloom[1], true);		
+        if(bestUpgrade.index) {		
+            bestUpgrade.effect *= getModUpgradeCost(loom, bestUpgrade.index);		
+            bestUpgrade.effect = bestUpgrade.effect.toFixed(6);		
+            var styleIndex = 4 + (bestUpgrade.index * 3);		
+            //enclose in backtic ` for template string $ stuff		
+            document.getElementById('selectedHeirloom').childNodes[0].childNodes[styleIndex].style.backgroundColor = "lightblue";		
+            document.getElementById('selectedHeirloom').childNodes[0].childNodes[styleIndex].setAttribute("onmouseover", `tooltip(\'Heirloom\', \"customText\", event, \'<div class=\"selectedHeirloomItem heirloomRare${loom.rarity}\"> AutoTrimps recommended upgrade for this item. </div>\'         )`);		
+            document.getElementById('selectedHeirloom').childNodes[0].childNodes[styleIndex].setAttribute("onmouseout", 'tooltip(\'hide\')');		
+            //lightblue = greyish		
+            //swapClass("tooltipExtra", "tooltipExtraHeirloom", document.getElementById("tooltipDiv"));		
+            //document.getElementById("tooltipDiv");		
+        }		
+    }   		
+}		
+//Automatically evaluate and carry the best heirlooms, and recommend upgrades for equipped items. AutoHeirlooms will only change carried items when the heirlooms window is not open. Carried items will be compared and swapped with the types that are already carried. If a carry spot is empty, it will be filled with the best shield (if available). Evaluation is based ONLY on the following mods (listed in order of priority, high to low): Void Map Drop Chance/Trimp Attack, Crit Chance/Crit Damage, Miner Efficiency/Metal Drop, Gem Drop/Dragimp Efficiency, Farmer/Lumberjack Efficiency. For the purposes of carrying, rarity trumps all of the stat evaluations. Empty mod slots are valued at the average value of the best missing mod.		
+//OLD:		//OLD:
+function autoHeirlooms() {		function autoHeirlooms() {
+    if(!heirloomsShown && game.global.heirloomsExtra.length > 0){		    if(!heirloomsShown && game.global.heirloomsExtra.length > 0){
+        //start by immediately carrying any protected heirlooms.		        //start by immediately carrying any protected heirlooms.
+        for(var extra in game.global.heirloomsExtra) {		        for(var extra in game.global.heirloomsExtra) {
+            var theLoom = game.global.heirloomsExtra[extra];		            var theLoom = game.global.heirloomsExtra[extra];
+            if ((theLoom.protected) && (game.global.heirloomsCarried.length < game.global.maxCarriedHeirlooms)){		            if ((theLoom.protected) && (game.global.heirloomsCarried.length < game.global.maxCarriedHeirlooms)){
+                selectHeirloom(extra, 'heirloomsExtra');		                selectHeirloom(extra, 'heirloomsExtra');
+                carryHeirloom();		                carryHeirloom();
+            }		            }
+        }		        }
+        //re-evaluate their worth (needed to refresh the worth array since we possibly moved the extras)		        //re-evaluate their worth (needed to refresh the worth array since we possibly moved the extras)
+        sortHeirlooms();        		        worthOfHeirlooms();        
+        for(var carried in game.global.heirloomsCarried) {		        for(var carried in game.global.heirloomsCarried) {
+            var theLoom = game.global.heirloomsCarried[carried];		            var theLoom = game.global.heirloomsCarried[carried];
+            if(worth[theLoom.type].length == 0) continue;		            if(worth[theLoom.type].length == 0) continue;
+            var index = worth[theLoom.type][0];		            var index = worth[theLoom.type][0];
+            if(theLoom.rarity < game.global.heirloomsExtra[index].rarity || (theLoom.rarity == game.global.heirloomsExtra[index].rarity && evaluateMods(carried, 'heirloomsCarried') < evaluateMods(index, 'heirloomsExtra'))) {		            if(theLoom.rarity < game.global.heirloomsExtra[index].rarity || (theLoom.rarity == game.global.heirloomsExtra[index].rarity && evaluateMods(carried, 'heirloomsCarried') < evaluateMods(index, 'heirloomsExtra'))) {
+                if (!theLoom.protected){		                if (!theLoom.protected){
+                    selectHeirloom(carried, 'heirloomsCarried');		                    selectHeirloom(carried, 'heirloomsCarried');
+                    stopCarryHeirloom();		                    stopCarryHeirloom();
+                    selectHeirloom(index, 'heirloomsExtra');		                    selectHeirloom(index, 'heirloomsExtra');
+                    carryHeirloom();		                    carryHeirloom();
+                    sortHeirlooms();		                    worthOfHeirlooms();
+                }		                }
+            }		            }
+        }		        }
+        if (game.global.heirloomsCarried.length < game.global.maxCarriedHeirlooms){		        if (game.global.heirloomsCarried.length < game.global.maxCarriedHeirlooms){
+            if(worth.Shield.length > 0)		            if(worth.Shield.length > 0)
+                selectHeirloom(worth.Shield[0], 'heirloomsExtra');		                selectHeirloom(worth.Shield[0], 'heirloomsExtra');
+            else if(worth.Staff.length > 0)		            else if(worth.Staff.length > 0)
+                selectHeirloom(worth.Staff[0], 'heirloomsExtra');		                selectHeirloom(worth.Staff[0], 'heirloomsExtra');
+            carryHeirloom();		            carryHeirloom();
+        }		        }
+    }		    }
+    else if(heirloomsShown && game.global.selectedHeirloom.length > 0){		    else if(heirloomsShown && game.global.selectedHeirloom.length > 0){
+        heirloomUpgradeHighlighting();		        heirloomUpgradeHighlighting();
+    }		    }
+}		}
 //common to both autoheirloom1 and 2
+//Shows you which Mod you would be best off upgrading in the heirloom window by highlighting it in blueish gray and a tooltip.
 function heirloomUpgradeHighlighting() {
     var bestUpgrade;
     if(game.global.selectedHeirloom[1].includes('Equipped')) {
@@ -493,48 +578,6 @@ function heirloomUpgradeHighlighting() {
             //document.getElementById("tooltipDiv");
         }
     }   
-}
-
-//Automatically evaluate and carry the best heirlooms, and recommend upgrades for equipped items. AutoHeirlooms will only change carried items when the heirlooms window is not open. Carried items will be compared and swapped with the types that are already carried. If a carry spot is empty, it will be filled with the best shield (if available). Evaluation is based ONLY on the following mods (listed in order of priority, high to low): Void Map Drop Chance/Trimp Attack, Crit Chance/Crit Damage, Miner Efficiency/Metal Drop, Gem Drop/Dragimp Efficiency, Farmer/Lumberjack Efficiency. For the purposes of carrying, rarity trumps all of the stat evaluations. Empty mod slots are valued at the average value of the best missing mod.
-//OLD:
-function autoHeirlooms() {
-
-    if(!heirloomsShown && game.global.heirloomsExtra.length > 0){
-        //start by immediately carrying any protected heirlooms.
-        for(var extra in game.global.heirloomsExtra) {
-            var theLoom = game.global.heirloomsExtra[extra];
-            if ((theLoom.protected) && (game.global.heirloomsCarried.length < game.global.maxCarriedHeirlooms)){
-                selectHeirloom(extra, 'heirloomsExtra');
-                carryHeirloom();
-            }
-        }
-        //re-evaluate their worth (needed to refresh the worth array since we possibly moved the extras)
-        sortHeirlooms();        
-        for(var carried in game.global.heirloomsCarried) {
-            var theLoom = game.global.heirloomsCarried[carried];
-            if(worth[theLoom.type].length == 0) continue;
-            var index = worth[theLoom.type][0];
-            if(theLoom.rarity < game.global.heirloomsExtra[index].rarity || (theLoom.rarity == game.global.heirloomsExtra[index].rarity && evaluateMods(carried, 'heirloomsCarried') < evaluateMods(index, 'heirloomsExtra'))) {
-                if (!theLoom.protected){
-                    selectHeirloom(carried, 'heirloomsCarried');
-                    stopCarryHeirloom();
-                    selectHeirloom(index, 'heirloomsExtra');
-                    carryHeirloom();
-                    sortHeirlooms();
-                }
-            }
-        }
-        if (game.global.heirloomsCarried.length < game.global.maxCarriedHeirlooms){
-            if(worth.Shield.length > 0)
-                selectHeirloom(worth.Shield[0], 'heirloomsExtra');
-            else if(worth.Staff.length > 0)
-                selectHeirloom(worth.Staff[0], 'heirloomsExtra');
-            carryHeirloom();
-        }
-    }
-    else if(heirloomsShown && game.global.selectedHeirloom.length > 0){
-        heirloomUpgradeHighlighting();
-    }
 }
 
 //commented out because it was never finished.
