@@ -583,7 +583,6 @@ function autoSwapHeirlooms(loomtype="Shield" || "Staff", loomlocation="heirlooms
     populateHeirloomWindow();    
     //-------OK------
 }
-*/
 
 
 //Determines the best heirloom mods
