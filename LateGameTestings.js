@@ -1057,7 +1057,7 @@ function initializeAutoTrimps() {
 function easyMode() {
     if (game.resources.trimps.realMax() > 50000000) {
         autoTrimpSettings.MaxHouse.value = (game.global.world * 2);
-        if (game.global.turkimpTimer > 0 && getBuildingItemPrice(game.buildings.Warpstation, "gems", false, 1) > game.resources.gems.owned) {
+        if (game.global.turkimpTimer > 0 && game.global.world != 200 && getBuildingItemPrice(game.buildings.Warpstation, "gems", false, 1) > game.resources.gems.owned) {
         autoTrimpSettings.MaxTrainers.value = game.buildings.Tribute.owned/2.1;
         autoTrimpSettings.FarmerRatio.value = '60';
         autoTrimpSettings.LumberjackRatio.value = '5';
@@ -1637,7 +1637,7 @@ function manualLabor() {
         if (game.global.playerGathering != lowestResource && !haveWorkers && !breedFire && game.global.turkimpTimer < 1) {
             // debug('Set gather lowestResource');
             setGather(lowestResource);
-        } else if (game.global.turkimpTimer > 0 && getBuildingItemPrice(game.buildings.Warpstation, "gems", false, 1) > game.resources.gems.owned ) {
+        } else if (game.global.turkimpTimer > 0 && game.global.world != 200 && getBuildingItemPrice(game.buildings.Warpstation, "gems", false, 1) > game.resources.gems.owned ) {
             //debug('Set gather ManualGather');
             setGather('food');
         } else if (game.global.turkimpTimer > 0 && game.global.world != 200 ) {
@@ -1971,12 +1971,12 @@ function autoMap() {
         var shouldDoNullMaps = false;
         if (
 	(game.global.mapBonus < 1 && !game.global.mapsActive && (game.global.world == 15 || game.global.world == 21 || game.global.world == 25 || game.global.world == 31 || game.global.world == 34 || game.global.world == 37)) ||
-        (game.global.mapBonus < 1 && (game.global.world == 9205 || game.global.world == 9215 || game.global.world == 9223 || game.global.world == 9225 || game.global.world == 9226 || game.global.world == 9227 || game.global.world == 228 || game.global.world == 229)) ||
-        (game.global.mapBonus < 2 && (game.global.world == 999 || game.global.world == 999 || game.global.world == 999 || game.global.world == 999)) ||
+	(game.global.mapBonus < 1 && (game.global.world == 9205 || game.global.world == 9215 || game.global.world == 9223 || game.global.world == 9225 || game.global.world == 9226 || game.global.world == 9227 || game.global.world == 228 || game.global.world == 229)) ||
+	(game.global.mapBonus < 2 && (game.global.world == 999 || game.global.world == 999 || game.global.world == 999 || game.global.world == 999)) ||
         (game.global.mapBonus < 4 && (game.global.world == 999 || game.global.world == 999 || game.global.world == 999 || game.global.world == 999)) ||
         (game.global.mapBonus < 5 && (game.global.world == 210 || game.global.world == 220 || game.global.world == 230 || game.global.world == 240 || (game.global.world >= 237 && game.global.world <= 239) || (game.global.world >= 245 && game.global.world <= 249) || (game.global.world >= 253 && game.global.world <= 259) || game.global.world >= 263)) ||
         (game.global.mapBonus < 6 && (game.global.world >= 999 && game.global.world <= 9999)) ||
-	(game.global.mapBonus < 9 && (game.global.world == 250 || game.global.world == 200 || game.global.world == 260 || game.global.world >= 270)) ||
+        (game.global.mapBonus < 9 && (game.global.world == 250 || game.global.world == 200 || game.global.world == 260 || game.global.world >= 270)) ||
 	//force to stay in nullmaps if you overkill all the cells unless you are about to hit max map bonus.
         (game.global.world >= 205 && game.global.mapsActive && game.global.mapBonus < 9 && (new Date().getTime() - game.global.mapStarted) > (270 * game.global.mapGridArray.length))
 	//option to force stay in zone X time in min and farm
