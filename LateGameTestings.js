@@ -2605,9 +2605,11 @@ function delayStartAgain(){
     setInterval(mainLoop, runInterval);
     updateCustomButtons();
 }
-    //Run the dynamic prestige changing script below.
-    if (getPageSetting('DynamicPrestige')) prestigeChanging();
-    else autoTrimpSettings.Prestige.selected = document.getElementById('Prestige').value; //if we dont want to, just make sure the UI setting and the internal setting are aligned.
+//Run the dynamic prestige changing script below.
+if (getPageSetting('DynamicPrestige')) {
+	prestigeChanging();
+} else {
+	autoTrimpSettings.Prestige.selected = document.getElementById('Prestige').value; //if we dont want to, just make sure the UI setting and the internal setting are aligned.
 }
 
 //Change prestiges as we go (thanks to Hider)
