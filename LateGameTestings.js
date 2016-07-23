@@ -1138,7 +1138,6 @@ function buyUpgrades() {
             buyUpgrade(upgrade, true, true);
             if(upgrade == 'Coordination') newCoord = true;
             //debug('bought upgrade ' + upgrade);
-            }
         }
     }
 }
@@ -1160,7 +1159,7 @@ function buyStorage() {
             jest = simpleSeconds(Bs[B], 45);
             jest = scaleToCurrentMap(jest);
         }
-<Merge Conflict>
+        if ((game.global.world < 10 && owned > max * 0.1) || owned > max * 0.6 || owned + jest > max * 0.6) {
             // debug('Buying ' + B + '(' + Bs[B] + ') at ' + Math.floor(game.resources[Bs[B]].owned / (game.resources[Bs[B]].max * packMod * 0.99) * 100) + '%');
             if (canAffordBuilding(B)) {
                 safeBuyBuilding(B);
