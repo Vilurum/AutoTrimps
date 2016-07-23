@@ -2605,17 +2605,6 @@ function delayStartAgain(){
     document.getElementById('Prestige').value = autoTrimpSettings.PrestigeBackup.selected;
 }
 
-
-
-//This is totally cheating Only use for debugging
-// game.settings.speed = 1;
-// game.settings.speedTemp = 1;
-// setTimeout(function() {
-//     game.settings.speed = 2;
-// }, 1000);
-
-setTimeout(delayStart, 2000);
-
 var stopScientistsatFarmers = 250000;
 function mainLoop() {
     stopScientistsatFarmers = 250000;   //put this here so it reverts every cycle (in case we portal out of watch challenge)
