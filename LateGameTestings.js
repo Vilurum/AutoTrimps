@@ -1,3 +1,4 @@
+
 // ==UserScript==
 // @name         AutoTrimpsV2+genBTC
 // @namespace    http://tampermonkey.net/
@@ -32,6 +33,7 @@ var newCoord = false;
 var letItGo = 0;
 var Gigas = 0;
 var WarpstationWall = false;
+
 
 
 var baseDamage = 0;
@@ -254,6 +256,7 @@ function safeBuyBuilding(building) {
         if (game.global.buildingsQueue[b].includes(building)) return false;
     }
 
+
     preBuy();
     game.global.buyAmt = 1;
     if (!canAffordBuilding(building)) {
@@ -272,6 +275,7 @@ function safeBuyBuilding(building) {
     }
     debug('Building ' + building, '*hammer2');
     buyBuilding(building, true, true);
+
 
     postBuy();
     return true;
@@ -543,46 +547,13 @@ function autoHeirlooms() {
     }
 }
 
-//commented out because it was never finished.
-/*
-function autoSwapHeirlooms(loomtype="Shield" || "Staff", loomlocation="heirloomsCarried" || "heirloomsExtra"){
-    var bestfooddroploom = [];
-    var bestwooddroploom = [];
-    var bestmetaldroploom = [];
-    var bestgemdroploom = [];
-    
-    //search in loomlocation="heirloomsCarried" or "heirloomsExtra"
-    for(var eachloom in game.global[loomlocation]) {
-        var theLoom = game.global[loomlocation][eachloom];
-        if (theLoom.type != loomtype)
-            continue;
-        var effRating = evaluateMods(eachloom,loomlocation);
-    } 
-    if(loomlocation.includes('Equipped'))
-        loom = game.global[loomlocation];
-    else
-        loom = game.global[loomlocation][loom];
-    
-    //---------- SHIELD SWAP FUNCTION (search on critdamage and swap)---
-    var count = 0;
-    for (var carried in game.global.heirloomsCarried){
-        var heirloom = game.global.heirloomsCarried[carried];
-        for (var item in heirloom.mods){
-            if (item[0] == "critDamage" && item[1] > 300){
-                unequipHeirloom(game.global.ShieldEquipped, "heirloomsCarried");
-                game.global.ShieldEquipped = heirloom;
-                game.global.heirloomsCarried.splice(count, 1);
-            }
-        }
-        count++;
-    }
-    for (var item in heirloom.mods){
-        game.heirlooms[heirloom.type][heirloom.mods[item][0]].currentBonus += heirloom.mods[item][1];
-    }
-    populateHeirloomWindow();    
-    //-------OK------
-}
-*/
+
+
+
+
+
+
+
 
 
 //Determines the best heirloom mods
@@ -884,10 +855,12 @@ function evaluateEfficiency(equipName) {
     if (10*Cos > NextCost && equip.Stat == 'attack' && game.global.world > 37) {
         Wall = true;
     }
+
     if ((gameResource.prestige < ((game.global.world-10)/5)+2 && gameResource.level > 2) && (equip.Stat == 'attack') && game.global.world > 37) {
         Res = 0;
         Wall = true;
     }
+
     if (gameResource.prestige+1 < ((game.global.world-10)/5)+2 && gameResource.level > 0 && game.global.world > 37) {
         Res = 0;
         Wall = true;
@@ -1048,15 +1021,11 @@ function getBreedTime(remaining,round) {
 function initializeAutoTrimps() {
     debug('AutoTrimps Loaded!', '*spinner3');
     loadPageVariables();
-
-    var atscript = document.getElementById('AutoTrimps-script')
-      , base = 'https://genbtc.github.io/AutoTrimps'
-      ;
-    if (atscript !== null) {
-        base = atscript.getAttribute('src').replace(/\/AutoTrimps2\.js$/, '');
-    }
-    document.head.appendChild(document.createElement('script')).src = base + '/NewUI.js';
-    document.head.appendChild(document.createElement('script')).src = base + '/Graphs.js';
+    javascript: with(document)(head.appendChild(createElement('script')).src = 'https://genbtc.github.io/AutoTrimps/NewUI.js')._;
+    javascript: with(document)(head.appendChild(createElement('script')).src = 'https://genbtc.github.io/AutoTrimps/Graphs.js')._;
+    //needed for local testing.
+    //javascript:with(document)(head.appendChild(createElement('script')).src = 'https://localhost:4445/NewUI.js')._;
+    //javascript:with(document)(head.appendChild(createElement('script')).src = 'https://localhost:4445/Graphs.js')._;    
     toggleSettingsMenu();
     toggleSettingsMenu();
 }
@@ -1168,6 +1137,7 @@ function buyStorage() {
         if (getPageSetting('ManualGather')) {
             setGather('buildings');
         }
+
         if (game.global.world > 35) {
             autoTrimpSettings.MaxGateway.value = 0.8 * game.global.world;
         }
@@ -1222,6 +1192,7 @@ function buyStorage() {
        //}
        //var list = [61,62,63,64,65,66,67,68,69,70,72,74,76,78,81,84,87,90,95,100,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175,180,190,200,210,220,230,240,250,260,270,280,290,300];
 
+
        
         //Prestige list:
         //2'Dagger''Dagadder',4'Mace''Megamace',6'Polearm''Polierarm',8'Battleaxe''Axeidic',10'Greatsword''Greatersword',
@@ -1236,10 +1207,12 @@ function buyStorage() {
 	} else if (game.global.world < 200 && game.global.world > 40 && ((game.global.world >= 76 && game.global.world <= 80) || (game.global.world >= 88 && game.global.world <= 90) || (game.global.world >= 98 && game.global.world <= 100) || (game.global.world >= 108 && game.global.world <= 110) || (game.global.world >= 118 && game.global.world <= 120) || (game.global.world >= 128 && game.global.world <= 130) || (game.global.world >= 138 && game.global.world <= 140) || (game.global.world >= 148 && game.global.world <= 150) || (game.global.world >= 158 && game.global.world <= 160) || (game.global.world >= 168 && game.global.world <= 170) || (game.global.world >= 177 && game.global.world <= 180) || (game.global.world >= 186 && game.global.world <= 190) || (game.global.world == 199))) {
            document.getElementById('Prestige').selectedIndex = 1;
            autoTrimpSettings.Prestige.selected = "Supershield";
+
 	} else {
            document.getElementById('Prestige').selectedIndex = 0;
            autoTrimpSettings.Prestige.selected = "Off";
         }
+
     }
 }
 
@@ -1521,6 +1494,7 @@ function autoLevelEquipment() {
                             ||
                             !getPageSetting('DelayArmorWhenNeeded')  //or when its off.
                         )
+
                     )
                 )
             ) 
@@ -1705,6 +1679,7 @@ function autoStance() {
     var newSquadRdy = game.resources.trimps.realMax() <= game.resources.trimps.owned + 1;
     var enemy;
     if (!game.global.mapsActive && !game.global.preMapsActive) {
+
 
         if (typeof game.global.gridArray[game.global.lastClearedCell + 1] === 'undefined') {
             enemy = game.global.gridArray[0];
@@ -1961,6 +1936,7 @@ function autoMap() {
                 shouldDoMaps = true;
             }
         }
+
 
 
         //stack tox stacks if heliumGrowing has been set to true, or if we need to clear our void maps
@@ -2539,9 +2515,11 @@ function manageGenes() {
     else if ((targetBreed < getBreedTime(true) || (game.resources.trimps.soldiers == 0 && getBreedTime(true) > 0.2)) && breedFire == false && (getPageSetting('BreedFire') || (game.global.world == 200)) && game.global.world > 10) {
         breedFire = true;
     }
+
         //really should be integrated with the buyBuildings routine instead of here, but I think it's mostly harmless here
         else if (targetBreed < getBreedTime() && getPageSetting('ManageBreedtimer') && !game.buildings.Nursery.locked) {
             safeBuyBuilding('Nursery');
+
 
     //reset breedFire once we have less than 2 seconds remaining
     if(getBreedTime(true) < 0.4) breedFire = false;
@@ -2590,6 +2568,7 @@ function delayStartAgain(){
 }
 
 
+
 function mainLoop() {
     stopScientistsatFarmers = 250000;   //put this here so it reverts every cycle (in case we portal out of watch challenge)
     game.global.addonUser = true;
@@ -2625,6 +2604,7 @@ function mainLoop() {
     else if (getPageSetting('AutoHeirlooms')) autoHeirlooms();
     if (getPageSetting('TrapTrimps') && game.global.trapBuildAllowed && game.global.trapBuildToggled == false) toggleAutoTrap();
     if (getPageSetting('AutoRoboTrimp')) autoRoboTrimp();
+
 
     autoLevelEquipment();
     autoStance();
