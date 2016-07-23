@@ -2596,6 +2596,15 @@ function mainLoop() {
             // debug('triggered fight');
         }
     }
+}
+function delayStart() {
+    initializeAutoTrimps();
+    setTimeout(delayStartAgain, 2000);
+}
+function delayStartAgain(){
+    setInterval(mainLoop, runInterval);
+    updateCustomButtons();
+}
     //Run the dynamic prestige changing script below.
     if (getPageSetting('DynamicPrestige')) prestigeChanging();
     else autoTrimpSettings.Prestige.selected = document.getElementById('Prestige').value; //if we dont want to, just make sure the UI setting and the internal setting are aligned.
@@ -2660,29 +2669,20 @@ function prestigeChanging(){
         else if (game.global.mapBonus >= 9)
             autoTrimpSettings.Prestige.selected = "Dagadder";
     }
-function delayStart() {
-    initializeAutoTrimps();
-    setTimeout(delayStartAgain, 2000);
 }
-function delayStartAgain(){
-    setInterval(mainLoop, runInterval);
-    updateCustomButtons();
-    //setInterval(updateCustomButtons, 10000);
-}
-    //If we are not within the last 10 zones but still need to farm, get 5 upgrades:
-    if(game.global.world <= (lastzone-zonesToFarm) && game.global.world <= (lastzone-10)  &&  game.global.lastClearedCell < 79){
-        if (game.global.mapBonus < 4)
-            autoTrimpSettings.Prestige.selected = "GambesOP";
-        else if (game.global.mapBonus >= 4)
-            autoTrimpSettings.Prestige.selected = "Dagadder";
+
+//If we are not within the last 10 zones but still need to farm, get 5 upgrades:
+if(game.global.world <= (lastzone-zonesToFarm) && game.global.world <= (lastzone-10)  &&  game.global.lastClearedCell < 79){
+    if (game.global.mapBonus < 4)
+        autoTrimpSettings.Prestige.selected = "GambesOP";
+    else if (game.global.mapBonus >= 4)
+        autoTrimpSettings.Prestige.selected = "Dagadder";
     }
    
     //If we are not in the prestige farming zone (the beginning of the run), use dagger:
     if (game.global.world < lastzone-zonesToFarm || game.global.mapBonus == 10)  
        autoTrimpSettings.Prestige.selected = "Dagadder";
 }
-
-
 
 //we copied message function because this was not able to be called from function debug() without getting a weird scope? related "cannot find function" error.
 var lastmessagecount = 1;
