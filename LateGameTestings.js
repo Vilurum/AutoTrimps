@@ -1136,8 +1136,9 @@ function buyUpgrades() {
         if (upgrade == 'Gigastation' && (game.global.lastWarp ? game.buildings.Warpstation.owned < (game.global.lastWarp + getPageSetting('DeltaGigastation') + 8 - gameUpgrade.allowed + gameUpgrade.done) : game.buildings.Warpstation.owned < getPageSetting('FirstGigastation'))) continue;
         if ((!game.upgrades.Scientists.done && upgrade != 'Battle') ? (available && upgrade == 'Scientists' && game.upgrades.Scientists.allowed) : (available)) {
             buyUpgrade(upgrade, true, true);
-            if(upgrade == 'Coordination') newCoord = true;
-            //debug('bought upgrade ' + upgrade);
+            	if(upgrade == 'Coordination') newCoord = true;
+            	//debug('bought upgrade ' + upgrade);
+        	}
         }
     }
 }
