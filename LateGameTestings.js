@@ -1161,14 +1161,15 @@ function buyStorage() {
         }
         if ((game.global.world < 10 && owned > max * 0.1) || owned > max * 0.6 || owned + jest > max * 0.6) {
             // debug('Buying ' + B + '(' + Bs[B] + ') at ' + Math.floor(game.resources[Bs[B]].owned / (game.resources[Bs[B]].max * packMod * 0.99) * 100) + '%');
-            if (canAffordBuilding(B)) {
-                safeBuyBuilding(B);
-            }
-            if (getPageSetting('ManualGather')) {
-            	setGather('buildings');
-            }
+        }
+        if (canAffordBuilding(B)) {
+            safeBuyBuilding(B);
+        }
+        if (getPageSetting('ManualGather')) {
+            setGather('buildings');
+        }
         if (game.global.world > 35) {
-           autoTrimpSettings.MaxGateway.value = 0.8 * game.global.world;
+            autoTrimpSettings.MaxGateway.value = 0.8 * game.global.world;
         }
 
 	//old way to calculate Giga/Delta
