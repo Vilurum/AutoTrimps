@@ -2679,8 +2679,6 @@ if(game.global.world <= (lastzone-zonesToFarm) && game.global.world <= (lastzone
         autoTrimpSettings.Prestige.selected = "GambesOP";
     else if (game.global.mapBonus >= 4)
         autoTrimpSettings.Prestige.selected = "Dagadder";
-    }
-   
     //If we are not in the prestige farming zone (the beginning of the run), use dagger:
     if (game.global.world < lastzone-zonesToFarm || game.global.mapBonus == 10)  
        autoTrimpSettings.Prestige.selected = "Dagadder";
