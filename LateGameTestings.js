@@ -2676,14 +2676,14 @@ function prestigeChanging(){
         else if (game.global.mapBonus >= 9)
             autoTrimpSettings.Prestige.selected = "Dagadder";
     }
-}
-
-//If we are not within the last 10 zones but still need to farm, get 5 upgrades:
-if(game.global.world <= (lastzone-zonesToFarm) && game.global.world <= (lastzone-10)  &&  game.global.lastClearedCell < 79){
+    
+    //If we are not within the last 10 zones but still need to farm, get 5 upgrades:
+    if(game.global.world <= (lastzone-zonesToFarm) && game.global.world <= (lastzone-10)  &&  game.global.lastClearedCell < 79){
     if (game.global.mapBonus < 4)
         autoTrimpSettings.Prestige.selected = "GambesOP";
     else if (game.global.mapBonus >= 4)
         autoTrimpSettings.Prestige.selected = "Dagadder";
+    }
 
     //If we are not in the prestige farming zone (the beginning of the run), use dagger:
     if (game.global.world < lastzone-zonesToFarm || game.global.mapBonus == 10)  
