@@ -268,7 +268,6 @@ function safeBuyBuilding(building) {
     }
     debug('Building ' + building, '*hammer2');
     buyBuilding(building, true, true);
-<Merge Conflict>
     postBuy();
     return true;
 }
@@ -1335,7 +1334,7 @@ function buyJobs() {
     }
     
     var oldBuy = game.global.buyAmt;
-	
+    
     //Simple buy if you can
     if (getPageSetting('MaxTrainers') > game.jobs.Trainer.owned || getPageSetting('MaxTrainers') == -1) {
         game.global.buyAmt = 1;
