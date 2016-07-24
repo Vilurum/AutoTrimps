@@ -2548,7 +2548,7 @@ function autoRoboTrimp() {
         debug("Activated Robotrimp Ability", '*podcast');
     }
 }
-/*
+
 //Version 3.6 Golden Upgrades
 function autoGoldenUpgrades() {
     //get the numerical value of the selected index of the dropdown box
@@ -2560,7 +2560,7 @@ function autoGoldenUpgrades() {
     var what = ["Off","Helium", "Battle", "Void"]        
     buyGoldenUpgrade(what[setting]);        
 }
-*/
+
 
 ////////////////////////////////////////
 //Main Logic Loop///////////////////////
@@ -2601,7 +2601,7 @@ function mainLoop() {
     // no easy mode no script.
     easyMode();
     if (getPageSetting('BuyUpgrades')) buyUpgrades();
-//    autoGoldenUpgrades();
+    autoGoldenUpgrades();
     if (getPageSetting('BuyStorage')) buyStorage();
     if (getPageSetting('BuyBuildings')) buyBuildings();
     if (getPageSetting('BuyJobs')) buyJobs();
