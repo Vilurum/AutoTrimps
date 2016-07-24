@@ -1998,7 +1998,7 @@ function autoMap() {
         if (
         (game.global.mapBonus < 1 && !game.global.mapsActive && (game.global.world == 15 || game.global.world == 21 || game.global.world == 25 || game.global.world == 31 || game.global.world == 34 || game.global.world == 37)) ||
         (game.global.mapBonus < 5 && (game.global.world == 210 || game.global.world == 220 || game.global.world == 230 || game.global.world == 240)) ||
-        (game.global.mapBonus < 9 && (game.global.world == 200 || game.global.world == 250 || game.global.world == 260 || game.global.world >= 270)) ||
+        (game.global.mapBonus < 9 && (game.global.world == 200 || game.global.world == 250 || game.global.world == 260 || game.global.world == 270 || game.global.world == 280 || game.global.world == 290 || game.global.world == 300)) ||
         //enter map in zones that you cant overkill the first raw of them, the next command will make sure you keep farming if you can't overkill in the maps.
         (game.global.mapBonus < 1 && game.global.world >= 205 && (new Date().getTime() - game.global.zoneStarted) > (270 * 11) && game.global.lastClearedCell <= 10) ||
         //force to stay in nullmaps if you overkill all the cells unless you are about to hit max map bonus.
@@ -2054,6 +2054,7 @@ function autoMap() {
                 doVoids = true;
                 //check to make sure we won't get 1-shot in nostance by boss
                 var eAttack = getEnemyMaxAttack(game.global.world, theMap.size, 'Voidsnimp', theMap.difficulty);
+                eAttack *= (getCorruptScale("attack") / 2).toFixed(1);
                 var ourHealth = baseHealth;
                 if(game.global.challengeActive == 'Balance') {
                     var stacks = game.challenges.Balance.balanceStacks ? (game.challenges.Balance.balanceStacks > theMap.size) ? theMap.size : game.challenges.Balance.balanceStacks : false;
