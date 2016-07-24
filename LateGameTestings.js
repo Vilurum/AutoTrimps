@@ -317,7 +317,7 @@ function highlightHousing() {
                 //break;
                 
                 //Warpstation Wall - if we try to save to next prestige, allow only warps that cost allot less then current metal.
-                if ((WarpstationWall == true && bestBuilding == "Warpstation") || (game.global.world == getPageSetting('VoidMaps') && 4 * getBuildingItemPrice(game.buildings.Warpstation, "metal", false, 1) > game.resources.metal.owned))
+                if ((WarpstationWall == true && bestBuilding == "Warpstation") || (game.global.world >= getPageSetting('VoidMaps') && 4 * getBuildingItemPrice(game.buildings.Warpstation, "metal", false, 1) > game.resources.metal.owned))
 
                 //    (1.1 * getBuildingItemPrice(game.buildings.Warpstation, "metal", false, 1) > game.resources.metal.owned))
                         bestBuilding = null;
@@ -1483,7 +1483,7 @@ function autoLevelEquipment() {
     if (game.global.world < 199 || game.global.world > 200 || ((new Date().getTime() - game.global.zoneStarted) / 1000 / 60) > 85) {
     autoTrimpSettings.GeneticistTimer.value = '30';
     } else {
-    autoTrimpSettings.GeneticistTimer.value = '90';
+    autoTrimpSettings.GeneticistTimer.value = '60';
     }
 
     for (var equipName in equipmentList) {
