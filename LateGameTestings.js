@@ -1997,12 +1997,10 @@ function autoMap() {
         var shouldDoNullMaps = false;
         if (
 	(game.global.mapBonus < 1 && !game.global.mapsActive && (game.global.world == 15 || game.global.world == 21 || game.global.world == 25 || game.global.world == 31 || game.global.world == 34 || game.global.world == 37)) ||
-	(game.global.mapBonus < 1 && (game.global.world == 9205 || game.global.world == 9215 || game.global.world == 9223 || game.global.world == 9225 || game.global.world == 9226 || game.global.world == 9227 || game.global.world == 228 || game.global.world == 229)) ||
-	(game.global.mapBonus < 2 && (game.global.world == 999 || game.global.world == 999 || game.global.world == 999 || game.global.world == 999)) ||
-        (game.global.mapBonus < 4 && (game.global.world == 999 || game.global.world == 999 || game.global.world == 999 || game.global.world == 999)) ||
-        (game.global.mapBonus < 5 && (game.global.world == 210 || game.global.world == 220 || game.global.world == 230 || game.global.world == 240 || (game.global.world >= 237 && game.global.world <= 239) || (game.global.world >= 245 && game.global.world <= 249) || (game.global.world >= 253 && game.global.world <= 259) || game.global.world >= 263)) ||
-        (game.global.mapBonus < 6 && (game.global.world >= 999 && game.global.world <= 9999)) ||
-        (game.global.mapBonus < 9 && (game.global.world == 250 || game.global.world == 200 || game.global.world == 260 || game.global.world >= 270)) ||
+        (game.global.mapBonus < 5 && (game.global.world == 210 || game.global.world == 220 || game.global.world == 230 || game.global.world == 240)) ||
+        (game.global.mapBonus < 9 && (game.global.world == 200 || game.global.world == 250 || game.global.world == 260 || game.global.world >= 270)) ||
+        //enter  map in this zones, the next line will make sure you keep farming if you can't clear it fast
+        (game.global.mapBonus < 1 && game.global.world == (207||213||215||217||223||225||227||233||235||237||243||245||247||253||255||257||263||265)) ||
 	//force to stay in nullmaps if you overkill all the cells unless you are about to hit max map bonus.
         (game.global.world >= 205 && game.global.mapsActive && game.global.mapBonus < 9 && (new Date().getTime() - game.global.mapStarted) > (270 * game.global.mapGridArray.length))
 	//option to force stay in zone X time in min and farm
